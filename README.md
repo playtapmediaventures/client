@@ -1,9 +1,10 @@
-Origin: [angularClass webpack starter(https://github.com/AngularClass/angular2-webpack-starter)
+Origin: [angularClass webpack starter](https://github.com/AngularClass/angular2-webpack-starter)
 
+<img width="672" alt="MSCLVR" src="http://www.tunecore.com/wp-content/uploads/sites/10/2015/05/Screen-Shot-2015-05-14-at-1.58.54-PM-672x302.png">
 ___
 
 
-# Angular2 Webpack Starter
+# Music Lover Client
 
 
 > An Angular 2 starter kit featuring [Angular 2](https://angular.io) ([Router](https://angular.io/docs/js/latest/api/router/), [Forms](https://angular.io/docs/js/latest/api/forms/),
