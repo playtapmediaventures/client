@@ -15,8 +15,11 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home';
 import { NoContentComponent } from './no-content';
 
+import { MlHttp} from './shared/mlHttp.service';
+
 // Application wide providers
 const APP_PROVIDERS = [
+  MlHttp
 ];
 
 
