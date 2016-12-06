@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import {UrlService} from "../shared/url.service";
 import {CtaService, Promotion} from "../shared/cta.service";
 import {StyleSafe} from "../pipes/safe.pipe";
+import {PlayButtonComponent} from "../play-button/playButton.component";
 
 @Component({
   selector: 'home',
-  providers: [],
+  providers: [PlayButtonComponent],
   styleUrls: [ 'home.component.scss' ],
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
 })
 export class HomeComponent {
   public slug: string;

@@ -5,7 +5,7 @@
   <div class="song-wrapper">
     <div class="album-img float-left"
          [style.backgroundImage]="'url(' + promotion?.albumArtUrlLarge + ')'  | styleSafe">
-      <div class="play-btn"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
+      <play-button [songUrl]="promotion?.iTunesLink"></play-button>
     </div>
     <div class="album-detail float-left">
       <div class="artist-name">{{ promotion?.artistName }}</div>
