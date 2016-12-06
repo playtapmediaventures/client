@@ -1,6 +1,42 @@
-html, body{
-  height: 100%;
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #00b0e8;
-  color: #FFF;
+@import "reset";
+
+html, body, app, main{
+  height:100%;
+}
+
+body{
+  font-size: 100%;
+}
+
+
+@media screen and (min-width: 1200px) {
+  body{
+    font-size: 110%;
+  }
+
+}
+
+
+@media screen and (min-width: 1600px) {
+  body {
+    font-size: 120%;
+  }
+}
+
+@media screen and (min-width: 2200px) {
+  body {
+    font-size: 140%;
+  }
+}
+
+@media screen and (min-width: 2800px) {
+  body {
+    font-size: 160%;
+  }
+}
+
+@media screen and (min-width: 3200px) {
+  body {
+    font-size: 170%;
+  }
 }

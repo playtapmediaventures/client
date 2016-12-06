@@ -17,10 +17,6 @@ import { Component, ViewEncapsulation } from '@angular/core';
     <main>
       <router-outlet></router-outlet>
     </main>
-
-    <footer>
-      Footer
-    </footer>
   `
 })
 export class AppComponent {

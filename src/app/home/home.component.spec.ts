@@ -12,7 +12,7 @@ import { MockBackend } from '@angular/http/testing';
 
 // Load the implementations that should be tested
 import { HomeComponent } from './home.component';
-import { MlHttp } from '../shared/mlHttp.service'
+import { MlHttpService } from '../shared/MlHttp.service'
 
 describe('Home', () => {
   // provide our implementations or mocks to the dependency injector
@@ -20,7 +20,7 @@ describe('Home', () => {
     providers: [
       BaseRequestOptions,
       MockBackend,
-      MlHttp,
+      MlHttpService,
       {
         provide: Http,
         useFactory: function(backend: ConnectionBackend, defaultOptions: BaseRequestOptions) {

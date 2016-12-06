@@ -3,17 +3,19 @@ import {Http, URLSearchParams, RequestOptions, Headers} from '@angular/http';
 import {Observable} from 'rxjs/observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
-import {exists, keys} from '../util/util';
+import {keys} from '../util/util';
 
 @Injectable()
-export class MlHttp {
-  private static _BASE_URL = 'http://localhost:3001/v3/';
+export class MlHttpService {
+  private static _BASE_URL = '';
+  //private static _BASE_URL = 'http://localhost:3001/';
+  //private static _BASE_URL = 'http://api.msclvr.com/';
 
   constructor(private _http: Http) {
   }
 
   get(path: string, params?: Object): Observable<Object> {
-    let url = MlHttp._urlFor(path, params);
+    let url = MlHttpService._urlFor(path, params);
 
     return this._http.get(url, this._requestOptions().merge({body: ''}))
       .share()
@@ -44,12 +46,12 @@ export class MlHttp {
     let searchParams = new URLSearchParams();
 
     for (let key of keys(params)) {
-
-      if (params[key] instanceof Array) {
-        params[key].forEach((param) => searchParams.append(key + '[]', param));
-      } else {
-        searchParams.set(key, params[key]);
-      }
+      searchParams.set(key, params[key]);
+      // if (params[key] instanceof Array) {
+      //   params[key].forEach((param) => searchParams.append(key + '[]', param));
+      // } else {
+      //   searchParams.set(key, params[key]);
+      // }
     }
 
     return searchParams;
