@@ -6,7 +6,7 @@ require('ts-node/register');
 var helpers = require('./helpers');
 
 exports.config = {
-  baseUrl: 'http://localhost:9000/',
+  baseUrl: 'http://localhost:9001/',
 
   // use `npm run e2e`
   specs: [

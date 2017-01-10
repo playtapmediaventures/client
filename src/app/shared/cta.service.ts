@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {MlHttpService} from './mlHttp.service';
 import {Observable} from 'rxjs/observable';
 
-export interface Promotion{
+export interface Promotion {
   slug: string;
   artistName: string;
   collectionName: string;
@@ -16,13 +16,17 @@ export interface Promotion{
     message: string;
     tag: string;
     link: string;
+    page: string;
   };
-};
+}
+;
 
 @Injectable()
 export class CtaService {
   public promotion: Promotion;
-  constructor(private _http: MlHttpService) {}
+
+  constructor(private _http: MlHttpService) {
+  }
 
   /***
    * call backend to get promotion info.
@@ -48,7 +52,7 @@ export class CtaService {
    * @param response response from crisco
    * @private
    */
-  private _parsePromotion(response: any){
+  private _parsePromotion(response: any) {
     this.promotion = {
       slug: response.slug,
       artistName: response.medium.artist_name,
@@ -59,7 +63,7 @@ export class CtaService {
       trackName: response.medium.track_name,
       iTunesLink: response.medium.links.details[0].url,
     };
-    if (response.calls_to_action.details.length > 0){
+    if (response.calls_to_action.details.length > 0) {
       for (let cta of response.calls_to_action.details) {
         // only one channel is enabled.
         if (cta.enabled) {
@@ -67,7 +71,8 @@ export class CtaService {
             type: cta.type,
             message: cta.message,
             tag: cta.tag,
-            link: cta._links.self.href
+            link: cta._links.self.href,
+            page: 'https://www.facebook.com/zuck'
           }
         }
       }
@@ -79,75 +84,61 @@ export class CtaService {
   //temp
   private jsonResponse(): any {
     return {
-   "_links":{
-      "self":{
-         "href":"/promotions/22"
+      "_links": {"self": {"href": "/promotions/17"}},
+      "id": 17,
+      "slug": "SA6nJ0",
+      "custom_slug": null,
+      "promoter_id": 1,
+      "archived": false,
+      "created_at": "2016-11-02T09:07:58Z",
+      "clicks": {
+        "_links": {
+          "self": {"href": "/promotions/17/clicks"},
+          "stats": {"href": "/promotions/17/clicks/stats{?from_date,to_date}", "templated": true}
+        }, "count": 0
+      },
+      "calls_to_action": {
+        "_links": {"self": {"href": "/promotions/17/calls-to-action"}},
+        "details": [{
+          "_links": {"self": {"href": "/promotions/17/calls-to-action/11"}},
+          "id": 11,
+          "type": "facebook_follow",
+          "message": "Thanks for supporting good music! Follow me on Facebook before heading to iTunes...",
+          "enabled": false,
+          "tag": "93G",
+          "created_at": "2016-12-05T06:18:14Z"
+        }, {
+          "_links": {"self": {"href": "/promotions/17/calls-to-action/14"}},
+          "id": 14,
+          "type": "facebook_follow",
+          "message": "My Message",
+          "enabled": true,
+          "tag": "dL0",
+          "created_at": "2016-12-07T06:19:41Z"
+        }]
+      },
+      "medium": {
+        "_links": {"self": {"href": "/media/16"}},
+        "id": 16,
+        "type": "track",
+        "artist_name": "Adele",
+        "collection_name": "21",
+        "collection_explicitness": "notExplicit",
+        "album_art_url": "http://is5.mzstatic.com/image/thumb/Music/v4/cf/7e/47/cf7e47a8-bb18-9156-43d0-7591d0e0855e/source/100x100bb.jpg",
+        "track_name": "He Won't Go",
+        "track_explicitness": "notExplicit",
+        "links": {
+          "_links": {"self": {"href": "/media/16/links"}},
+          "details": [{
+            "_links": {"self": {"href": "/media/16/links/16"}},
+            "id": 16,
+            "country_code": "US",
+            "url": "https://itunes.apple.com/us/album/he-wont-go/id420075073?i=420075147&uo=4&app=itunes",
+            "match_quality": 1
+          }]
+        }
       }
-   },
-   "id":22,
-   "slug":"C0USFJ",
-   "custom_slug":"C0USFJsdsd",
-   "promoter_id":1,
-   "archived":false,
-   "created_at":"2016-11-03T06:50:16Z",
-   "clicks":{
-      "_links":{
-         "self":{
-            "href":"/promotions/22/clicks"
-         },
-         "stats":{
-            "href":"/promotions/22/clicks/stats{?from_date,to_date}",
-            "templated":true
-         }
-      },
-      "count":0
-   },
-   "calls_to_action":{
-      "_links":{
-         "self":{
-            "href":"/promotions/22/calls-to-action"
-         }
-      },
-      "details":[
-
-      ]
-   },
-   "medium":{
-      "_links":{
-         "self":{
-            "href":"/media/21"
-         }
-      },
-      "id":21,
-      "type":"track",
-      "artist_name":"Sting",
-      "collection_name":"Ten Summoner's Tales",
-      "collection_explicitness":"notExplicit",
-      "album_art_url":"http://is4.mzstatic.com/image/thumb/Music/v4/3b/11/33/3b1133ef-6f4b-22b8-7672-8acf9e661bbe/source/100x100bb.jpg",
-      "track_name":"Shape of My Heart",
-      "track_explicitness":"notExplicit",
-      "links":{
-         "_links":{
-            "self":{
-               "href":"/media/21/links"
-            }
-         },
-         "details":[
-            {
-               "_links":{
-                  "self":{
-                     "href":"/media/21/links/21"
-                  }
-               },
-               "id":21,
-               "country_code":"US",
-               "url":"https://itunes.apple.com/us/album/shape-of-my-heart/id388151?i=388143&uo=4&app=itunes",
-               "match_quality":1
-            }
-         ]
-      }
-   }
-};
+    };
 
 
   }

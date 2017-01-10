@@ -14,6 +14,8 @@ import {ROUTES} from './app.routes';
 // App is our top level component
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home';
+import {CountdownComponent} from './home';
+
 
 import {NoContentComponent} from './no-content';
 
@@ -21,15 +23,13 @@ import {MlHttpService} from './shared/mlHttp.service';
 import {UrlService} from './shared/url.service';
 import {CtaService} from "./shared/cta.service";
 import {StyleSafe} from "./pipes/safe.pipe";
-import {PlayButtonComponent} from "./play-button/playButton.component";
-import {PlayButtonService} from "./play-button/playButton.service";
+import {HtmlDirective} from "./directives/safeHtml.directive";
 
 // Application wide providers
 const APP_PROVIDERS = [
   MlHttpService,
   UrlService,
   CtaService,
-  PlayButtonService,
   __platform_browser_private__.BROWSER_SANITIZATION_PROVIDERS
 ];
 
@@ -39,9 +39,10 @@ const APP_PROVIDERS = [
   declarations: [
     AppComponent,
     HomeComponent,
-    PlayButtonComponent,
+    CountdownComponent,
     NoContentComponent,
-    StyleSafe
+    StyleSafe,
+    HtmlDirective
   ],
   imports: [ // import Angular's modules
     BrowserModule,

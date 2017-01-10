@@ -1,20 +1,30 @@
 <div class="homepage">
-  <div class="hero" [style.backgroundImage]="'url(' + promotion?.albumArtUrlLarge + ')'  | styleSafe"></div>
+  <div class="album-bg" [style.backgroundImage]="'url(' + promotion?.albumArtUrlLarge + ')'  | styleSafe"></div>
   <div class="apple-top"><i class="fa fa-apple" aria-hidden="true"></i></div>
 
   <div class="song-wrapper">
-    <div class="album-img float-left"
-         [style.backgroundImage]="'url(' + promotion?.albumArtUrlLarge + ')'  | styleSafe">
-      <play-button [songUrl]="promotion?.iTunesLink"></play-button>
+    <div class="follow-wrapper">
+      <div>{{promotion?.callsToAction?.message}}</div>
+      <div class="follow-buttons">
+        <span class="social-icon {{socialChannel()}}-color"><i class="fa fa-{{socialChannel()}}-square"
+                                                               aria-hidden="true"></i></span>
+        <span *ngIf="socialChannel() === 'facebook'" id="fb-like-wrapper">
+          &nbsp; Like {{promotion?.artistName}} on Facebook <br/>
+          <div class="fb-like"  data-href="https://www.facebook.com/Playtap-Media-Ventures-170433536496494/?pnref=lhc" data-layout="button" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>
+
+        </span>
+
+      </div>
+      <div class="itunes-link"><a [href]="promotion?.iTunesLink">No Thank you - please take me to iTunes</a></div>
+      <countdown [redirectLink]="promotion?.iTunesLink" [countTime]="20"></countdown>
+
+
     </div>
-    <div class="album-detail float-left">
-      <div class="artist-name">{{ promotion?.artistName }}</div>
-      <div class="track-name">{{ promotion?.trackName }}</div>
-      <div class="collection-name">{{ promotion?.collectionName }}</div>
-    </div>
-    <div class="itunes"><a [href]="promotion?.iTunesLink"><img [src]="itunesBadge"/></a></div>
   </div>
-
-
+  <div class="itunes-wrapper">
+    <div class="itunes">
+      <a [href]="promotion?.iTunesLink"><img [src]="itunesBadge"/></a>
+    </div>
+  </div>
 
 </div>
