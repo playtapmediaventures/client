@@ -39,17 +39,23 @@
     left: 50%;
     top: 50%;
     @include translate3D(-50%, -50%, 0);
+    min-width: 300px;
+    max-height: 65%;
+    overflow: auto;
     //background-color: white;
     //@include box-shadow(0px, 0.2em, 0.4em, 0px, rgba(0,0,0,0.8));
   }
 
   .follow-wrapper{
-    padding: 1.5em 2.5em;
+    padding: 0.5em 1.5em;
     background-color: white;
     line-height: 1.4;
     @include box-shadow(0px, 0.2em, 0.4em, 0px, rgba(0,0,0,0.8));
     @include fm-border-radius;
     text-align: center;
+    @media screen and (min-width: 768px) {
+      padding: 1.5em 2.5em;
+    }
   }
 
   .follow-buttons{
@@ -107,10 +113,45 @@
     text-align: center;
     font-size: 2em;
     color: red;
+    min-width: 300px;
+    max-height: 65%;
+    overflow: auto;
 
     a{
       font-size: 1.2rem;
       color: black;
     }
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  body{
+    font-size: 110%;
+  }
+
+}
+
+
+@media screen and (min-width: 1600px) {
+  body {
+    font-size: 120%;
+  }
+}
+
+@media screen and (min-width: 2200px) {
+  body {
+    font-size: 140%;
+  }
+}
+
+@media screen and (min-width: 2800px) {
+  body {
+    font-size: 160%;
+  }
+}
+
+@media screen and (min-width: 3200px) {
+  body {
+    font-size: 170%;
   }
 }

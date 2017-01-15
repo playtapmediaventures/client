@@ -39,10 +39,12 @@ export class CtaService {
     if(typeof slug === 'undefined' || typeof token === 'undefined'){
       return;
     }
-    let stream = this._http.get(`http://msclvr-crisco-staging.herokuapp.com/promotions/${slug}/cta-info.json?token=${token}`).share();
+    //let stream = this._http.get(`http://msclvr-crisco-staging.herokuapp.com/promotions/${slug}/cta-info.json?token=${token}`).share();
+    let stream = this._http.get('https://api.myjson.com/bins/43jxp');
 
     stream.subscribe((response) => {
-      this._parsePromotion(response);
+      //this._parsePromotion(response);
+      this._parsePromotion(this.jsonResponse());
     });
     return stream;
   }

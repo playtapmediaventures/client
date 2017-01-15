@@ -18,7 +18,7 @@ interface FBWindow extends Window {
 export class HomeComponent {
   public slug: string;
   public promotion: Promotion;
-  public itunesBadge = 'assets/img/itunes.svg';
+  public itunesBadge = 'http://msclvr.tomeralmog.com/assets/img/itunes.svg';
   public showLike = false;
   public fbLikeButton;
 
