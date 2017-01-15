@@ -20,7 +20,6 @@ import {CountdownComponent} from './home';
 import {NoContentComponent} from './no-content';
 
 import {MlHttpService} from './shared/mlHttp.service';
-import {UrlService} from './shared/url.service';
 import {CtaService} from "./shared/cta.service";
 import {StyleSafe} from "./pipes/safe.pipe";
 import {HtmlDirective} from "./directives/safeHtml.directive";
@@ -28,7 +27,6 @@ import {HtmlDirective} from "./directives/safeHtml.directive";
 // Application wide providers
 const APP_PROVIDERS = [
   MlHttpService,
-  UrlService,
   CtaService,
   __platform_browser_private__.BROWSER_SANITIZATION_PROVIDERS
 ];

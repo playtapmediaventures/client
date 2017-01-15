@@ -5,7 +5,8 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" media="all"
+        rel="stylesheet" type="text/css"/>
   <title><%= htmlWebpackPlugin.options.title %></title>
 
   <meta name="description" content="<%= htmlWebpackPlugin.options.title %>">
@@ -23,35 +24,38 @@
 
 <body>
 
-
+  <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
   <script>
-    (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=456829841160778";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
+    (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=456829841160778";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
   </script>
-   <!--<script>-->
+  <!--<script>-->
   <!--window.fbAsyncInit = function() {-->
-    <!--FB.init({-->
-      <!--appId      : '456829841160778',-->
-      <!--xfbml      : true,-->
-      <!--version    : 'v2.8'-->
-    <!--});-->
-    <!--FB.AppEvents.logPageView();-->
+  <!--FB.init({-->
+  <!--appId      : '456829841160778',-->
+  <!--xfbml      : true,-->
+  <!--version    : 'v2.8'-->
+  <!--});-->
+  <!--FB.AppEvents.logPageView();-->
   <!--};-->
 
   <!--(function(d, s, id){-->
-     <!--var js, fjs = d.getElementsByTagName(s)[0];-->
-     <!--if (d.getElementById(id)) {return;}-->
-     <!--js = d.createElement(s); js.id = id;-->
-     <!--js.src = "//connect.facebook.net/en_US/sdk.js";-->
-     <!--fjs.parentNode.insertBefore(js, fjs);-->
-   <!--}(document, 'script', 'facebook-jssdk'));-->
-<!--</script>-->
+  <!--var js, fjs = d.getElementsByTagName(s)[0];-->
+  <!--if (d.getElementById(id)) {return;}-->
+  <!--js = d.createElement(s); js.id = id;-->
+  <!--js.src = "//connect.facebook.net/en_US/sdk.js";-->
+  <!--fjs.parentNode.insertBefore(js, fjs);-->
+  <!--}(document, 'script', 'facebook-jssdk'));-->
+  <!--</script>-->
 
+
+  <script src="https://apis.google.com/js/platform.js"></script>
 
   <app>
     Loading...
@@ -64,5 +68,5 @@
   <% } %>
 
 
-</body>
+  </body>
 </html>

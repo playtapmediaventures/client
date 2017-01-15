@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {MlHttpService} from './mlHttp.service';
 import {Observable} from 'rxjs/observable';
+import 'rxjs/add/operator/toPromise';
 
 export interface Promotion {
   slug: string;
@@ -34,14 +35,14 @@ export class CtaService {
    * @param slug
    * @returns {Observable<Object>} response from http call
    */
-  getPromotion(slug): Observable<Object> {
-    //let stream = this._http.get(`promotions/by-slug/${slug}`);
-    let stream = this._http.get('https://api.myjson.com/bins/43jxp');
+  getPromotion(slug: string, token: string): Observable<Object>{
+    if(typeof slug === 'undefined' || typeof token === 'undefined'){
+      return;
+    }
+    let stream = this._http.get(`http://msclvr-crisco-staging.herokuapp.com/promotions/${slug}/cta-info.json?token=${token}`).share();
 
     stream.subscribe((response) => {
-      //this.parsePromotion(response);
-      this._parsePromotion(this.jsonResponse());
-      console.log(response);
+      this._parsePromotion(response);
     });
     return stream;
   }
@@ -100,22 +101,38 @@ export class CtaService {
       "calls_to_action": {
         "_links": {"self": {"href": "/promotions/17/calls-to-action"}},
         "details": [{
-          "_links": {"self": {"href": "/promotions/17/calls-to-action/11"}},
-          "id": 11,
-          "type": "facebook_follow",
-          "message": "Thanks for supporting good music! Follow me on Facebook before heading to iTunes...",
-          "enabled": false,
-          "tag": "93G",
-          "created_at": "2016-12-05T06:18:14Z"
-        }, {
           "_links": {"self": {"href": "/promotions/17/calls-to-action/14"}},
           "id": 14,
           "type": "facebook_follow",
           "message": "My Message",
-          "enabled": true,
+          "enabled": false,
           "tag": "dL0",
           "created_at": "2016-12-07T06:19:41Z"
-        }]
+        },{
+            "_links":{
+               "self":{
+                  "href":"/promotions/27039/calls-to-action/120"
+               }
+            },
+            "id":120,
+            "type":"twitter_follow",
+            "message":"Thanks for supporting good music! Follow me on Twitter before heading to iTunes...",
+            "enabled":true,
+            "tag":"NRg",
+            "created_at":"2016-12-05T01:01:43Z"
+         },{
+            "_links":{
+               "self":{
+                  "href":"/promotions/27039/calls-to-action/120"
+               }
+            },
+            "id":120,
+            "type":"youtube_follow",
+            "message":"youtube msg",
+            "enabled":false,
+            "tag":"NRg",
+            "created_at":"2016-12-05T01:01:43Z"
+         }]
       },
       "medium": {
         "_links": {"self": {"href": "/media/16"}},
@@ -142,6 +159,43 @@ export class CtaService {
 
 
   }
+
+  //
+  // {
+  //  "id":352,
+  //  "slug":"pfddDD",
+  //  "custom_slug":"tomer1",
+  //  "user":{
+  //     "email":"ariel.x.perez+staging@gmail.com",
+  //     "social_media_accounts":[
+  //        {
+  //           "network":"twitter",
+  //           "handle":""
+  //        },
+  //        {
+  //           "network":"facebook",
+  //           "handle":""
+  //        }
+  //     ]
+  //  },
+  //  "archived":false,
+  //  "call_to_action":{
+  //     "tag":"MDZ",
+  //     "type":"facebook_follow",
+  //     "message":"Thanks for supporting good music! Follow me on Facebook before heading to iTunes bla bla tomer1",
+  //     "created_at":"2017-01-14T18:56:58Z"
+  //  },
+  //  "medium":{
+  //     "type":"track",
+  //     "artist_name":"Tracy Chapman",
+  //     "collection_name":null,
+  //     "collection_explicitness":"notExplicit",
+  //     "album_art_url":null,
+  //     "track_name":null,
+  //     "track_explicitness":"notExplicit",
+  //     "url":"https://itunes.apple.com/us/album/fast-car/id79565550?i=79565507\u0026uo=4"
+  //  }
+//}
 
 }
 

@@ -1,5 +1,5 @@
 <div class="homepage">
-  <div class="album-bg" [style.backgroundImage]="'url(' + promotion?.albumArtUrlLarge + ')'  | styleSafe"></div>
+  <div class="album-bg" [style.backgroundImage]="bgImage() | styleSafe"></div>
   <div class="apple-top"><i class="fa fa-apple" aria-hidden="true"></i></div>
 
   <div class="song-wrapper">
@@ -13,6 +13,17 @@
           <div class="fb-like"  data-href="https://www.facebook.com/Playtap-Media-Ventures-170433536496494/?pnref=lhc" data-layout="button" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>
 
         </span>
+
+        <span *ngIf="socialChannel() === 'twitter'">
+          &nbsp; Follow {{promotion?.artistName}} on Twitter <br/>
+          <a class="twitter-follow-button" href="https://twitter.com/TwitterDev" data-show-count="false" data-size="large">Follow @TwitterDev</a>
+        </span>
+        <span *ngIf="socialChannel() === 'youtube'">
+
+          <div class="g-ytsubscribe" data-channel="GoogleDevelopers" data-layout="default" data-count="default"></div>
+        </span>
+
+
 
       </div>
       <div class="itunes-link"><a [href]="promotion?.iTunesLink">No Thank you - please take me to iTunes</a></div>

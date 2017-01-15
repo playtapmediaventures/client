@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import {UrlService} from "../shared/url.service";
 import {CtaService, Promotion} from "../shared/cta.service";
 import {PlayButtonComponent} from "../play-button/playButton.component";
+import {ActivatedRoute} from "@angular/router";
 
 declare var FB;
 interface FBWindow extends Window {
@@ -25,28 +25,55 @@ export class HomeComponent {
   private _FBInterval;
   constructor(
     private _ctaService: CtaService,
-    private _urlService: UrlService,
+    private _activatedRoute: ActivatedRoute
   ) {
 
   }
 
   ngOnInit() {
-    let slug = this._urlService.slug();
-    this._ctaService.getPromotion(slug).subscribe((response) => {
-      //console.log(response);
-      this.promotion = this._ctaService.promotion;
-      console.log(this.promotion);
-      //this.fbLikeButton = `<div class="fb-like" data-href="${this.promotion.callsToAction.page}" data-layout="button" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>`
+    this._activatedRoute.queryParams.subscribe((queryParams: any) => {
+      let slug = queryParams.slug;
+      let token = queryParams.token;
+      console.log('slug', slug);
+      console.log('slug', slug);
+      if(typeof slug !== 'undefined' || typeof token !== 'undefined') {
+        this._ctaService.getPromotion(slug, token).subscribe((response) => {
+          //console.log(response);
+          this.promotion = this._ctaService.promotion;
+          console.log(this.promotion);
+          //this.fbLikeButton = `<div class="fb-like" data-href="${this.promotion.callsToAction.page}" data-layout="button" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>`
+          if (this.promotion) {
+            if (this.promotion.callsToAction.type === 'facebook_follow') {
+              this._initFB();
+            }
+          }
 
-        this._initFB();
+        });
+      }
 
 
     });
 
-    //promotions/by-slug/<SLUG>
-    // this._mlHttpService.get('https://api.myjson.com/bins/3cljt').subscribe( (response) => {
-    //   console.log(response);
-    // });
+
+    // function onYtEvent(payload) {
+    // if (payload.eventType == 'subscribe') {
+    //   // Add code to handle subscribe event.
+    // } else if (payload.eventType == 'unsubscribe') {
+    //   // Add code to handle unsubscribe event.
+    // }
+    // if (window.console) { // for debugging only
+    //   window.console.log('YT event: ', payload);
+    // }
+  }
+
+  bgImage(): string{
+    if(this.promotion && this.promotion.albumArtUrlLarge) {
+      return 'url(' + this.promotion.albumArtUrlLarge + ')';
+    } else {
+      return 'url(../assets/img/msclvr-bg.png)';
+    }
+
+
   }
 
 
@@ -59,6 +86,8 @@ export class HomeComponent {
         type = 'facebook';
       } else if (this.promotion.callsToAction.type === 'twitter_follow') {
         type = 'twitter';
+      } else if (this.promotion.callsToAction.type === 'youtube_follow') {
+        type = 'youtube';
       }
     }
     return type;
