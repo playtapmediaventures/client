@@ -70,7 +70,7 @@ export class HomeComponent {
     if(this.promotion && this.promotion.albumArtUrlLarge) {
       return 'url(' + this.promotion.albumArtUrlLarge + ')';
     } else {
-      return 'url(../assets/img/msclvr-bg.png)';
+      return 'url(http://msclvr.tomeralmog.com/assets/img/msclvr-bg.png)';
     }
 
 
