@@ -39,12 +39,12 @@ export class CtaService {
     if(typeof slug === 'undefined' || typeof token === 'undefined'){
       return;
     }
-    //let stream = this._http.get(`http://msclvr-crisco-staging.herokuapp.com/promotions/${slug}/cta-info.json?token=${token}`).share();
-    let stream = this._http.get('https://api.myjson.com/bins/43jxp');
+    let stream = this._http.get(`http://beta.msclvr.co/api/cta/${slug}/info?token=${token}`).share();
+    //let stream = this._http.get('https://api.myjson.com/bins/43jxp');
 
     stream.subscribe((response) => {
-      //this._parsePromotion(response);
-      this._parsePromotion(this.jsonResponse());
+      this._parsePromotion(response);
+      //this._parsePromotion(this.jsonResponse());
     });
     return stream;
   }
@@ -107,7 +107,7 @@ export class CtaService {
           "id": 14,
           "type": "facebook_follow",
           "message": "My Message",
-          "enabled": false,
+          "enabled": true,
           "tag": "dL0",
           "created_at": "2016-12-07T06:19:41Z"
         },{
@@ -119,7 +119,7 @@ export class CtaService {
             "id":120,
             "type":"twitter_follow",
             "message":"Thanks for supporting good music! Follow me on Twitter before heading to iTunes...",
-            "enabled":true,
+            "enabled":false,
             "tag":"NRg",
             "created_at":"2016-12-05T01:01:43Z"
          },{
