@@ -22,6 +22,7 @@ import {NoContentComponent} from './no-content';
 import {MlHttpService} from './shared/mlHttp.service';
 import {CtaService} from "./shared/cta.service";
 import {StyleSafe} from "./pipes/safe.pipe";
+import {SafeSrcPipe} from "./pipes/safeSrc.pipe";
 import {HtmlDirective} from "./directives/safeHtml.directive";
 
 // Application wide providers
@@ -40,6 +41,7 @@ const APP_PROVIDERS = [
     CountdownComponent,
     NoContentComponent,
     StyleSafe,
+    SafeSrcPipe,
     HtmlDirective
   ],
   imports: [ // import Angular's modules

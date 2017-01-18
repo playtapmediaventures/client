@@ -44,7 +44,7 @@ export class HomeComponent {
           //this.fbLikeButton = `<div class="fb-like" data-href="${this.promotion.callsToAction.page}" data-layout="button" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>`
           if (this.promotion) {
             if (this.promotion.callsToAction.type === 'facebook_follow') {
-              this._initFB();
+              //this._initFB();
             }
           }
 
@@ -99,10 +99,15 @@ export class HomeComponent {
     // console.log(html_element);
   }
 
+  fbLikeUrl(): string {
+    let page = encodeURIComponent(this.promotion.callsToAction.page)
+    //return `http://www.facebook.com/plugins/like.php?href=${this.promotion.callsToAction.page}&layout=standard&show_faces=false&width=100&action=like&colorscheme=light&height=80`
+    return `https://www.facebook.com/v2.8/plugins/like.php?action=like&amp;app_id=456829841160778&amp;channel=http%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter%2Fr%2FD6ZfFsLEB4F.js%3Fversion%3D42%23cb%3Dfb6c7e09f8a74%26relation%3Dparent.parent&amp;container_width=0&amp;href=${page}&amp;layout=button&amp;locale=en_US&amp;sdk=joey&amp;share=false&amp;show_faces=false&amp;size=large`
+  }
+
 
   private _initFB(){
-    if (typeof FB !== 'undefined'){
-      console.log(this._FBInterval);
+    if (typeof FB !== 'undefined' && typeof this.promotion !== 'undefined'){
       clearInterval(this._FBInterval);
 
       console.log('FB Ready');
@@ -111,9 +116,7 @@ export class HomeComponent {
         xfbml      : true,
         version    : 'v2.8'
       });
-      //this.showLike = true;
       FB.AppEvents.logPageView();
-
       FB.XFBML.parse();
       FB.Event.subscribe('edge.create', this.page_like_or_unlike_callback);
       FB.Event.subscribe('edge.remove', this.page_like_or_unlike_callback);
