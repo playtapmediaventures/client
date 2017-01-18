@@ -16,7 +16,6 @@ export interface Promotion {
     type: string;
     message: string;
     tag: string;
-    link: string;
     page: string;
   };
 }
@@ -35,16 +34,15 @@ export class CtaService {
    * @param slug
    * @returns {Observable<Object>} response from http call
    */
-  getPromotion(slug: string, token: string): Observable<Object>{
-    if(typeof slug === 'undefined' || typeof token === 'undefined'){
+  getPromotion(slug: string, token: string): Observable<Object> {
+    if (typeof slug === 'undefined' || typeof token === 'undefined') {
       return;
     }
     let stream = this._http.get(`http://beta.msclvr.co/api/cta/${slug}/info?token=${token}`).share();
-    //let stream = this._http.get('https://api.myjson.com/bins/43jxp');
+    //let stream = this._http.get('https://api.myjson.com/bins/18rg77').share();
 
     stream.subscribe((response) => {
       this._parsePromotion(response);
-      //this._parsePromotion(this.jsonResponse());
     });
     return stream;
   }
@@ -56,111 +54,35 @@ export class CtaService {
    * @private
    */
   private _parsePromotion(response: any) {
+    console.log(response)
+    let mediumArt = response.medium.album_art_url ? response.medium.album_art_url.replace('100x100bb.jpg', '225x225-75.jpg') : null
+    let largeArt = response.medium.album_art_url ? response.medium.album_art_url.replace('100x100bb.jpg', '600x600-75.jpg') : null
     this.promotion = {
       slug: response.slug,
       artistName: response.medium.artist_name,
       collectionName: response.medium.collection_name,
       albumArtUrlSmall: response.medium.album_art_url,
-      albumArtUrlMedium: response.medium.album_art_url.replace('100x100bb.jpg', '225x225-75.jpg'),
-      albumArtUrlLarge: response.medium.album_art_url.replace('100x100bb.jpg', '600x600-75.jpg'),
+      albumArtUrlMedium: mediumArt,
+      albumArtUrlLarge: largeArt,
       trackName: response.medium.track_name,
-      iTunesLink: response.medium.links.details[0].url,
+      iTunesLink: response.medium.url,
     };
-    if (response.calls_to_action.details.length > 0) {
-      for (let cta of response.calls_to_action.details) {
-        // only one channel is enabled.
-        if (cta.enabled) {
-          this.promotion.callsToAction = {
-            type: cta.type,
-            message: cta.message,
-            tag: cta.tag,
-            link: cta._links.self.href,
-            page: 'https://www.facebook.com/zuck'
-          }
-        }
-      }
-    }
+    if (response.call_to_action) {
+      let cta = response.call_to_action;
+      // only one channel is enabled.
 
+      this.promotion.callsToAction = {
+        type: cta.type,
+        message: cta.message,
+        tag: cta.tag,
+        page: 'https://www.facebook.com/zuck'
+      }
+
+    }
     console.log(this.promotion);
   }
 
-  //temp
-  private jsonResponse(): any {
-    return {
-      "_links": {"self": {"href": "/promotions/17"}},
-      "id": 17,
-      "slug": "SA6nJ0",
-      "custom_slug": null,
-      "promoter_id": 1,
-      "archived": false,
-      "created_at": "2016-11-02T09:07:58Z",
-      "clicks": {
-        "_links": {
-          "self": {"href": "/promotions/17/clicks"},
-          "stats": {"href": "/promotions/17/clicks/stats{?from_date,to_date}", "templated": true}
-        }, "count": 0
-      },
-      "calls_to_action": {
-        "_links": {"self": {"href": "/promotions/17/calls-to-action"}},
-        "details": [{
-          "_links": {"self": {"href": "/promotions/17/calls-to-action/14"}},
-          "id": 14,
-          "type": "facebook_follow",
-          "message": "My Message",
-          "enabled": true,
-          "tag": "dL0",
-          "created_at": "2016-12-07T06:19:41Z"
-        },{
-            "_links":{
-               "self":{
-                  "href":"/promotions/27039/calls-to-action/120"
-               }
-            },
-            "id":120,
-            "type":"twitter_follow",
-            "message":"Thanks for supporting good music! Follow me on Twitter before heading to iTunes...",
-            "enabled":false,
-            "tag":"NRg",
-            "created_at":"2016-12-05T01:01:43Z"
-         },{
-            "_links":{
-               "self":{
-                  "href":"/promotions/27039/calls-to-action/120"
-               }
-            },
-            "id":120,
-            "type":"youtube_follow",
-            "message":"youtube msg",
-            "enabled":false,
-            "tag":"NRg",
-            "created_at":"2016-12-05T01:01:43Z"
-         }]
-      },
-      "medium": {
-        "_links": {"self": {"href": "/media/16"}},
-        "id": 16,
-        "type": "track",
-        "artist_name": "Adele",
-        "collection_name": "21",
-        "collection_explicitness": "notExplicit",
-        "album_art_url": "http://is5.mzstatic.com/image/thumb/Music/v4/cf/7e/47/cf7e47a8-bb18-9156-43d0-7591d0e0855e/source/100x100bb.jpg",
-        "track_name": "He Won't Go",
-        "track_explicitness": "notExplicit",
-        "links": {
-          "_links": {"self": {"href": "/media/16/links"}},
-          "details": [{
-            "_links": {"self": {"href": "/media/16/links/16"}},
-            "id": 16,
-            "country_code": "US",
-            "url": "https://itunes.apple.com/us/album/he-wont-go/id420075073?i=420075147&uo=4&app=itunes",
-            "match_quality": 1
-          }]
-        }
-      }
-    };
 
-
-  }
 
   //
   // {

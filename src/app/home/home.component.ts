@@ -34,15 +34,13 @@ export class HomeComponent {
     this._activatedRoute.queryParams.subscribe((queryParams: any) => {
       let slug = queryParams.slug;
       let token = queryParams.token;
-      console.log('slug', slug);
-      console.log('slug', slug);
       if(typeof slug !== 'undefined' || typeof token !== 'undefined') {
         this._ctaService.getPromotion(slug, token).subscribe((response) => {
           //console.log(response);
           this.promotion = this._ctaService.promotion;
           console.log(this.promotion);
           //this.fbLikeButton = `<div class="fb-like" data-href="${this.promotion.callsToAction.page}" data-layout="button" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>`
-          if (this.promotion) {
+          if (this.promotion && this.promotion.callsToAction) {
             if (this.promotion.callsToAction.type === 'facebook_follow') {
               //this._initFB();
             }
@@ -81,7 +79,7 @@ export class HomeComponent {
 
   socialChannel(): string {
     let type: string;
-    if(this.promotion) {
+    if(this.promotion && typeof this.promotion.callsToAction !== 'undefined') {
       if (this.promotion.callsToAction.type === 'facebook_follow') {
         type = 'facebook';
       } else if (this.promotion.callsToAction.type === 'twitter_follow') {
