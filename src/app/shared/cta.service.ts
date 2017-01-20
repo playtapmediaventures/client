@@ -12,6 +12,7 @@ export interface Promotion {
   albumArtUrlLarge: string;
   trackName: string;
   iTunesLink: string;
+  social_media_accounts: any;
   callsToAction?: {
     type: string;
     message: string;
@@ -39,7 +40,7 @@ export class CtaService {
       return;
     }
     let stream = this._http.get(`http://beta.msclvr.co/api/cta/${slug}/info?token=${token}`).share();
-    //let stream = this._http.get('https://api.myjson.com/bins/18rg77').share();
+    //let stream = this._http.get('https://api.myjson.com/bins/9unln').share();
 
     stream.subscribe((response) => {
       this._parsePromotion(response);
@@ -66,6 +67,7 @@ export class CtaService {
       albumArtUrlLarge: largeArt,
       trackName: response.medium.track_name,
       iTunesLink: response.medium.url,
+      social_media_accounts: response.user.social_media_accounts,
     };
     if (response.call_to_action) {
       let cta = response.call_to_action;
@@ -82,44 +84,41 @@ export class CtaService {
     console.log(this.promotion);
   }
 
-
-
-  //
-  // {
-  //  "id":352,
-  //  "slug":"pfddDD",
-  //  "custom_slug":"tomer1",
-  //  "user":{
-  //     "email":"ariel.x.perez+staging@gmail.com",
-  //     "social_media_accounts":[
-  //        {
-  //           "network":"twitter",
-  //           "handle":""
-  //        },
-  //        {
-  //           "network":"facebook",
-  //           "handle":""
-  //        }
-  //     ]
-  //  },
-  //  "archived":false,
-  //  "call_to_action":{
-  //     "tag":"MDZ",
-  //     "type":"facebook_follow",
-  //     "message":"Thanks for supporting good music! Follow me on Facebook before heading to iTunes bla bla tomer1",
-  //     "created_at":"2017-01-14T18:56:58Z"
-  //  },
-  //  "medium":{
-  //     "type":"track",
-  //     "artist_name":"Tracy Chapman",
-  //     "collection_name":null,
-  //     "collection_explicitness":"notExplicit",
-  //     "album_art_url":null,
-  //     "track_name":null,
-  //     "track_explicitness":"notExplicit",
-  //     "url":"https://itunes.apple.com/us/album/fast-car/id79565550?i=79565507\u0026uo=4"
-  //  }
-//}
+// {
+//   "id": 352,
+//   "slug": "pfddDD",
+//   "custom_slug": "tomer1",
+//   "user": {
+//     "email": "ariel.x.perez+staging@gmail.com",
+//     "social_media_accounts": [
+//       {
+//         "network": "facebook",
+//         "handle": "https://www.facebook.com/ariel.x.perez/"
+//       },
+//       {
+//         "network": "twitter",
+//         "handle": "arielxperez"
+//       }
+//     ]
+//   },
+//   "archived": false,
+//   "call_to_action": {
+//     "tag": "MDZ",
+//     "type": "facebook_follow",
+//     "message": "Thanks for supporting good music! Follow me on Facebook before heading to iTunes bla bla tomer1",
+//     "created_at": "2017-01-14T18:56:58Z"
+//   },
+//   "medium": {
+//     "type": "track",
+//     "artist_name": "Tracy Chapman",
+//     "collection_name": null,
+//     "collection_explicitness": "notExplicit",
+//     "album_art_url": null,
+//     "track_name": null,
+//     "track_explicitness": "notExplicit",
+//     "url": "https://itunes.apple.com/us/album/fast-car/id79565550?i=79565507&uo=4"
+//   }
+// }
 
 }
 

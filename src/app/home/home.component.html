@@ -2,7 +2,7 @@
   <div class="album-bg" [style.backgroundImage]="bgImage() | styleSafe"></div>
   <div class="apple-top"><i class="fa fa-apple" aria-hidden="true"></i></div>
 
-  <div class="song-wrapper" *ngIf="promotion">
+  <div class="song-wrapper" *ngIf="promotion && !loading">
     <div class="follow-wrapper">
       <div>{{promotion?.callsToAction?.message}}</div>
       <div class="follow-buttons">
@@ -39,9 +39,16 @@
     </div>
   </div>
 
-  <div class="song-wrapper" *ngIf="!promotion">
+  <div class="song-wrapper" *ngIf="!promotion && !loading">
     <div class="error"> Error: Promotion Missing. <br/><br/>
       <a href="https://msclvr.com/">back to msclvr</a>
+    </div>
+  </div>
+
+  <div class="song-wrapper" *ngIf="loading">
+    <div class="follow-wrapper">
+      <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+      <h3>Loading</h3>
     </div>
   </div>
 

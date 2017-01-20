@@ -21,6 +21,7 @@ export class HomeComponent {
   public itunesBadge = 'http://msclvr.tomeralmog.com/assets/img/itunes.svg';
   public showLike = false;
   public fbLikeButton;
+  public loading = true;
 
   private _FBInterval;
   constructor(
@@ -36,6 +37,7 @@ export class HomeComponent {
       let token = queryParams.token;
       if(typeof slug !== 'undefined' || typeof token !== 'undefined') {
         this._ctaService.getPromotion(slug, token).subscribe((response) => {
+          this.loading = false;
           //console.log(response);
           this.promotion = this._ctaService.promotion;
           console.log(this.promotion);
@@ -46,7 +48,13 @@ export class HomeComponent {
             }
           }
 
+        },(err) => {
+          console.log(err);
+          this.loading = false;
+
         });
+      } else {
+        this.loading = false;
       }
 
 
