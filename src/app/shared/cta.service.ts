@@ -44,8 +44,10 @@ export class CtaService {
     this._slug = slug;
     this._token = token;
 
-    //let stream = this._http.get(`http://beta.msclvr.co/api/cta/${slug}/info?token=${token}`).share();
-    let stream = this._http.get('https://api.myjson.com/bins/s01a7').share();
+    let stream = this._http.get(`http://beta.msclvr.co/api/cta/${slug}/info?token=${token}`).share();
+    //let stream = this._http.get('https://api.myjson.com/bins/s01a7').share(); // fb
+    //let stream = this._http.get('https://api.myjson.com/bins/16g2qf').share(); // tw
+
 
     stream.subscribe((response) => {
       this._parsePromotion(response);
@@ -96,7 +98,7 @@ export class CtaService {
             socialPage = account.handle;
           }
 
-          if (cta.type === 'twitter_like' && account.network === 'twitter') {
+          if (cta.type === 'twitter_follow' && account.network === 'twitter') {
             socialPage = account.handle;
           }
         }
@@ -112,38 +114,38 @@ export class CtaService {
   }
 
 // {
-//   "id": 352,
-//   "slug": "pfddDD",
-//   "custom_slug": "tomer1",
+//   "id": 308,
+//   "slug": "FrzoQe",
+//   "custom_slug": "tomer2",
 //   "user": {
 //     "email": "ariel.x.perez+staging@gmail.com",
 //     "social_media_accounts": [
 //       {
-//         "network": "facebook",
-//         "handle": "https://www.facebook.com/ariel.x.perez/"
-//       },
-//       {
 //         "network": "twitter",
 //         "handle": "arielxperez"
+//       },
+//       {
+//         "network": "facebook",
+//         "handle": "https://www.facebook.com/Playtap-Media-Ventures-170433536496494/?pnref=lhc"
 //       }
 //     ]
 //   },
 //   "archived": false,
 //   "call_to_action": {
-//     "tag": "MDZ",
-//     "type": "facebook_follow",
-//     "message": "Thanks for supporting good music! Follow me on Facebook before heading to iTunes bla bla tomer1",
-//     "created_at": "2017-01-14T18:56:58Z"
+//     "tag": "xQV",
+//     "type": "twitter_follow",
+//     "message": "Thanks for supporting good music! Follow me on Twitter before heading to iTunes...",
+//     "created_at": "2017-01-21T15:52:15Z"
 //   },
 //   "medium": {
 //     "type": "track",
-//     "artist_name": "Tracy Chapman",
-//     "collection_name": null,
+//     "artist_name": "\"Weird Al\" Yankovic",
+//     "collection_name": "The Essential Weird Al Yankovic",
 //     "collection_explicitness": "notExplicit",
-//     "album_art_url": null,
-//     "track_name": null,
+//     "album_art_url": "http://is1.mzstatic.com/image/thumb/Music3/v4/ca/56/1d/ca561d87-018c-068d-50a3-2e970d6539f7/source/100x100bb.jpg",
+//     "track_name": "Amish Paradise (Parody of \"Gangsta's Paradise\" By Coolio)",
 //     "track_explicitness": "notExplicit",
-//     "url": "https://itunes.apple.com/us/album/fast-car/id79565550?i=79565507&uo=4"
+//     "url": "https://itunes.apple.com/us/album/amish-paradise-parody-gangstas/id336037796?i=336038288&uo=4"
 //   }
 // }
 

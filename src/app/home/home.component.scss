@@ -59,7 +59,12 @@
   }
 
   .follow-buttons{
+    font-size: 1.1em;
     margin-top:1em;
+    background-color: #ccc;
+    display: inline-block;
+    @include fm-border-radius;
+    padding: 1em;
     .social-icon{
       font-size: 2em;
     }

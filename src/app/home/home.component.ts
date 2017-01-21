@@ -41,6 +41,8 @@ export class HomeComponent {
           if (this.promotion && this.promotion.callsToAction) {
             if (this.promotion.callsToAction.type === 'facebook_follow') {
               this._fbLikeIframeSrc();
+            } else if (this.promotion.callsToAction.type === 'twitter_follow') {
+              this._twBtnSrc();
             }
           }
 
@@ -149,6 +151,34 @@ export class HomeComponent {
       fjs.parentNode.insertBefore(js, fjs);
 
       this._initFB();
+
+  }
+
+  private _twBtnSrc() {
+    console.log('tw');
+    let twBtn = document.getElementById('tw-follow-btn');
+    if(twBtn) {
+      clearInterval(this._iframeInterval);
+      console.log('tw2');
+      twBtn.setAttribute('href', 'https://twitter.com/' + this.promotion.callsToAction.page);
+      this._initTwSdk();
+    } else {
+      this._iframeInterval = setInterval(()=> {
+          this._twBtnSrc()
+        }, 100
+      );
+    }
+  }
+
+  private _initTwSdk() {
+      let d = document;
+      let s = 'script';
+      let id = 'twitter-jssdk';
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
 
   }
 
