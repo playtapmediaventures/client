@@ -22,6 +22,18 @@ export class MlHttpService {
       .map(response => response.json());
   }
 
+  post(path: string, payload: Object): Observable<Object> {
+    return this._http.post(path, JSON.stringify(payload), this._requestOptions())
+      .share();
+      // .map((response: any) => {
+      //   if (!response._body) {
+      //     response._body = "{}";
+      //   }
+      //   return response.json();
+      // });
+
+  }
+
   private _requestOptions(): RequestOptions {
     let headersHash = {};
     headersHash = {
@@ -55,6 +67,10 @@ export class MlHttpService {
     }
 
     return searchParams;
+  }
+
+  private static _serializePost(path: string, payload: Object): string {
+    return `${path}:${JSON.stringify(payload)}`;
   }
 
 }

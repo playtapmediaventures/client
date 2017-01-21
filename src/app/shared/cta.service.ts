@@ -25,6 +25,8 @@ export interface Promotion {
 @Injectable()
 export class CtaService {
   public promotion: Promotion;
+  private _slug: string;
+  private _token: string;
 
   constructor(private _http: MlHttpService) {
   }
@@ -39,13 +41,28 @@ export class CtaService {
     if (typeof slug === 'undefined' || typeof token === 'undefined') {
       return;
     }
-    let stream = this._http.get(`http://beta.msclvr.co/api/cta/${slug}/info?token=${token}`).share();
-    //let stream = this._http.get('https://api.myjson.com/bins/9unln').share();
+    this._slug = slug;
+    this._token = token;
+
+    //let stream = this._http.get(`http://beta.msclvr.co/api/cta/${slug}/info?token=${token}`).share();
+    let stream = this._http.get('https://api.myjson.com/bins/s01a7').share();
 
     stream.subscribe((response) => {
       this._parsePromotion(response);
+    },(err) => {
     });
     return stream;
+  }
+
+  postConversion(){
+    this._http.post(
+      `http://msclvr-crisco-staging.herokuapp.com/promotions/${this._slug}/cta-info/conversion`,
+      {token: this._token}
+    ).subscribe( () => {
+      console.log('registered like success');
+    }, () => {
+      console.log('registered like failed');
+    });
   }
 
   /***
@@ -55,7 +72,6 @@ export class CtaService {
    * @private
    */
   private _parsePromotion(response: any) {
-    console.log(response)
     let mediumArt = response.medium.album_art_url ? response.medium.album_art_url.replace('100x100bb.jpg', '225x225-75.jpg') : null
     let largeArt = response.medium.album_art_url ? response.medium.album_art_url.replace('100x100bb.jpg', '600x600-75.jpg') : null
     this.promotion = {
@@ -72,16 +88,27 @@ export class CtaService {
     if (response.call_to_action) {
       let cta = response.call_to_action;
       // only one channel is enabled.
+      let socialPage = '';
+      if(response.user && response.user.social_media_accounts){
+        for (let account of response.user.social_media_accounts) {
 
+          if (cta.type === "facebook_follow" && account.network === 'facebook') {
+            socialPage = account.handle;
+          }
+
+          if (cta.type === 'twitter_like' && account.network === 'twitter') {
+            socialPage = account.handle;
+          }
+        }
+      }
       this.promotion.callsToAction = {
         type: cta.type,
         message: cta.message,
         tag: cta.tag,
-        page: 'https://www.facebook.com/zuck'
+        page: socialPage
       }
 
     }
-    console.log(this.promotion);
   }
 
 // {

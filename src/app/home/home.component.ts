@@ -19,32 +19,28 @@ export class HomeComponent {
   public slug: string;
   public promotion: Promotion;
   public itunesBadge = 'http://msclvr.tomeralmog.com/assets/img/itunes.svg';
-  public showLike = false;
-  public fbLikeButton;
   public loading = true;
 
   private _FBInterval;
+  private _iframeInterval;
   constructor(
     private _ctaService: CtaService,
     private _activatedRoute: ActivatedRoute
   ) {
-
+    (<any>window).homeComponent = this;
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this._activatedRoute.queryParams.subscribe((queryParams: any) => {
       let slug = queryParams.slug;
       let token = queryParams.token;
       if(typeof slug !== 'undefined' || typeof token !== 'undefined') {
         this._ctaService.getPromotion(slug, token).subscribe((response) => {
           this.loading = false;
-          //console.log(response);
           this.promotion = this._ctaService.promotion;
-          console.log(this.promotion);
-          //this.fbLikeButton = `<div class="fb-like" data-href="${this.promotion.callsToAction.page}" data-layout="button" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>`
           if (this.promotion && this.promotion.callsToAction) {
             if (this.promotion.callsToAction.type === 'facebook_follow') {
-              //this._initFB();
+              this._fbLikeIframeSrc();
             }
           }
 
@@ -72,6 +68,8 @@ export class HomeComponent {
     // }
   }
 
+
+
   bgImage(): string{
     if(this.promotion && this.promotion.albumArtUrlLarge) {
       return 'url(' + this.promotion.albumArtUrlLarge + ')';
@@ -81,8 +79,6 @@ export class HomeComponent {
 
 
   }
-
-
 
 
   socialChannel(): string {
@@ -100,15 +96,22 @@ export class HomeComponent {
   }
 
   page_like_or_unlike_callback(url, html_element) {
-    console.log("page_like_or_unlike_callback");
-    // console.log(url);
-    // console.log(html_element);
+    (<any>window).homeComponent._ctaService.postConversion();
   }
 
-  fbLikeUrl(): string {
-    let page = encodeURIComponent(this.promotion.callsToAction.page)
-    //return `http://www.facebook.com/plugins/like.php?href=${this.promotion.callsToAction.page}&layout=standard&show_faces=false&width=100&action=like&colorscheme=light&height=80`
-    return `https://www.facebook.com/v2.8/plugins/like.php?action=like&amp;app_id=456829841160778&amp;channel=http%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter%2Fr%2FD6ZfFsLEB4F.js%3Fversion%3D42%23cb%3Dfb6c7e09f8a74%26relation%3Dparent.parent&amp;container_width=0&amp;href=${page}&amp;layout=button&amp;locale=en_US&amp;sdk=joey&amp;share=false&amp;show_faces=false&amp;size=large`
+  private _fbLikeIframeSrc(){
+    let likeBtn = document.getElementById('fb-like-btn');
+    if(likeBtn) {
+      clearInterval(this._iframeInterval);
+
+      likeBtn.setAttribute('data-href', this.promotion.callsToAction.page);
+      this._initFbSdk();
+    } else {
+      this._iframeInterval = setInterval(()=> {
+          this._fbLikeIframeSrc()
+        }, 100
+      );
+    }
   }
 
 
@@ -116,24 +119,37 @@ export class HomeComponent {
     if (typeof FB !== 'undefined' && typeof this.promotion !== 'undefined'){
       clearInterval(this._FBInterval);
 
-      console.log('FB Ready');
       FB.init({
         appId      : '456829841160778',
         xfbml      : true,
         version    : 'v2.8'
       });
+
       FB.AppEvents.logPageView();
       FB.XFBML.parse();
       FB.Event.subscribe('edge.create', this.page_like_or_unlike_callback);
       FB.Event.subscribe('edge.remove', this.page_like_or_unlike_callback);
-      //setTimeout(FB.XFBML.parse(),10);
+
     } else {
-      console.log('FB Not ready');
       this._FBInterval = setInterval(()=> {
           this._initFB()
         }, 100
       );
     }
+  }
+
+  private _initFbSdk() {
+      let d = document;
+      let s = 'script';
+      let id = 'facebook-jssdk';
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=456829841160778";
+      fjs.parentNode.insertBefore(js, fjs);
+
+      this._initFB();
+
   }
 
 

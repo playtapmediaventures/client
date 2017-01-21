@@ -9,14 +9,12 @@
         <span class="social-icon {{socialChannel()}}-color"><i class="fa fa-{{socialChannel()}}-square"
                                                                aria-hidden="true"></i></span>
         <span *ngIf="socialChannel() === 'facebook'" id="fb-like-wrapper">
-          &nbsp; Like {{promotion?.artistName}} on Facebook <br/>
-
-          <!--<iframe name="f317ee109936f6" width="1000px" height="1000px" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="fb:like Facebook Social Plugin" src="fbLikeUrl() | safeSrc" style="border: none; visibility: visible; width: 63px; height: 28px;" class=""></iframe>-->
-
+          &nbsp; Like {{promotion?.artistName}} on Facebook {{promotion?.callsToAction?.page}}<br/>
+          <div id="fb-like-btn" class="fb-like"  data-layout="button" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>
         </span>
 
         <span *ngIf="socialChannel() === 'twitter'">
-          &nbsp; Follow {{promotion?.artistName}} on Twitter <br/>
+          &nbsp; Follow {{promotion?.artistName}} on Twitter  <br/>
           <a class="twitter-follow-button" href="https://twitter.com/TwitterDev" data-show-count="false" data-size="large">Follow @TwitterDev</a>
         </span>
         <span *ngIf="socialChannel() === 'youtube'">
