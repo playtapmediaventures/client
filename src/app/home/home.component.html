@@ -19,7 +19,8 @@
         </span>
         <span *ngIf="socialChannel() === 'youtube'">
 
-          <div class="g-ytsubscribe" data-channel="GoogleDevelopers" data-layout="default" data-count="default"></div>
+          Subscribe to {{promotion?.callsToAction?.page}} on Youtube<br/>
+          <div class="g-ytsubscribe" [attr.data-channel]="promotion?.callsToAction?.page" data-layout="default" data-count="hidden" data-onytevent="onYtEvent"></div>
         </span>
 
 

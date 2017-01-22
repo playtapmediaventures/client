@@ -44,9 +44,10 @@ export class CtaService {
     this._slug = slug;
     this._token = token;
 
-    //let stream = this._http.get(`http://beta.msclvr.co/api/cta/${slug}/info?token=${token}`).share();
+    let stream = this._http.get(`http://beta.msclvr.co/api/cta/${slug}/info?token=${token}`).share();
     //let stream = this._http.get('https://api.myjson.com/bins/s01a7').share(); // fb
-    let stream = this._http.get('https://api.myjson.com/bins/16g2qf').share(); // tw
+    //let stream = this._http.get('https://api.myjson.com/bins/16g2qf').share(); // tw
+    //let stream = this._http.get('https://api.myjson.com/bins/ql69j').share(); // yt
 
 
     stream.subscribe((response) => {
@@ -98,7 +99,11 @@ export class CtaService {
             socialPage = account.handle;
           }
 
-          if (cta.type === 'twitter_follow' && account.network === 'twitter') {
+          else if (cta.type === 'twitter_follow' && account.network === 'twitter') {
+            socialPage = account.handle;
+          }
+
+          else if (cta.type === 'youtube_subscribe' && account.network === 'youtube') {
             socialPage = account.handle;
           }
         }

@@ -23,6 +23,8 @@ export class HomeComponent {
 
   private _FBInterval;
   private _iframeInterval;
+  private _intervalCount = 0;
+  private _maxIntervals = 10;
   constructor(
     private _ctaService: CtaService,
     private _activatedRoute: ActivatedRoute
@@ -43,6 +45,8 @@ export class HomeComponent {
               this._fbLikeIframeSrc();
             } else if (this.promotion.callsToAction.type === 'twitter_follow') {
               this._twBtnSrc();
+            } else if (this.promotion.callsToAction.type === 'youtube_subscribe') {
+              this._initYtSdk();
             }
           }
 
@@ -90,7 +94,7 @@ export class HomeComponent {
         type = 'facebook';
       } else if (this.promotion.callsToAction.type === 'twitter_follow') {
         type = 'twitter';
-      } else if (this.promotion.callsToAction.type === 'youtube_follow') {
+      } else if (this.promotion.callsToAction.type === 'youtube_subscribe') {
         type = 'youtube';
       }
     }
@@ -102,6 +106,11 @@ export class HomeComponent {
   }
 
   private _fbLikeIframeSrc(){
+    if(this._intervalCount > this._maxIntervals) {
+      clearInterval(this._iframeInterval);
+    }
+    this._intervalCount++;
+
     let likeBtn = document.getElementById('fb-like-btn');
     if(likeBtn) {
       clearInterval(this._iframeInterval);
@@ -179,6 +188,32 @@ export class HomeComponent {
       js = d.createElement(s); js.id = id;
       js.src = "//platform.twitter.com/widgets.js";
       fjs.parentNode.insertBefore(js, fjs);
+
+  }
+
+  private _initYtSdk() {
+      (<any>window).onYtEvent = (payload) =>{
+        console.log('YT event: ', payload);
+        if (payload.eventType == 'subscribe') {
+          // Add code to handle subscribe event
+          (<any>window).homeComponent._ctaService.postConversion();
+        } else if (payload.eventType == 'unsubscribe') {
+          // Add code to handle unsubscribe event.
+        }
+        if (window.console) { // for debugging only
+          window.console.log('YT event: ', payload);
+        }
+      }
+      let d = document;
+      let s = 'script';
+      let id = 'yt-jssdk';
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "https://apis.google.com/js/platform.js";
+      fjs.parentNode.insertBefore(js, fjs);
+
+
 
   }
 
