@@ -53,6 +53,7 @@
     @include box-shadow(0px, 0.2em, 0.4em, 0px, rgba(0,0,0,0.8));
     @include fm-border-radius;
     text-align: center;
+    position: relative;
     @media screen and (min-width: 768px) {
       padding: 1.5em 2.5em;
     }
@@ -152,6 +153,25 @@
     a{
       font-size: 1.2rem;
       color: black;
+    }
+  }
+
+  .youtube-click-track-wrapper {
+    width: 100%;
+    height: 40px;
+    left:0;
+    position: absolute;
+    text-align: center;
+    margin-top: -40px;
+    .youtube-click-track {
+      width: 150px;
+      height: 40px;
+      display: inline-block;
+      background: #FFF url(http://msclvr.tomeralmog.com/assets/img/yt-logo.png) center center no-repeat;
+      @include background-size(contain);
+      @include fm-border-radius;
+      cursor: pointer;
+
     }
   }
 }

@@ -7,31 +7,29 @@ import {keys} from '../util/util';
 
 @Injectable()
 export class MlHttpService {
-  private static _BASE_URL = '';
-  //private static _BASE_URL = 'http://localhost:3001/';
-  //private static _BASE_URL = 'http://api.msclvr.com/';
+  //private _BASE_URL = '';
+  private _BASE_URL = 'http://beta.msclvr.co/api/cta/';
 
   constructor(private _http: Http) {
   }
 
-  get(path: string, params?: Object): Observable<Object> {
-    let url = MlHttpService._urlFor(path, params);
+  get(path: string, params?: Object,  noBase = false): Observable<Object> {
+    let url = this._urlFor(path, params, noBase);
 
     return this._http.get(url, this._requestOptions().merge({body: ''}))
       .share()
       .map(response => response.json());
   }
 
-  post(path: string, payload: Object): Observable<Object> {
-    return this._http.post(path, JSON.stringify(payload), this._requestOptions())
+  post(path: string, payload: Object,  noBase = false): Observable<Object> {
+    let url: string;
+    if(noBase) {
+      url = path;
+    } else {
+      url = this._BASE_URL + path;
+    }
+    return this._http.post(url, JSON.stringify(payload), this._requestOptions())
       .share();
-      // .map((response: any) => {
-      //   if (!response._body) {
-      //     response._body = "{}";
-      //   }
-      //   return response.json();
-      // });
-
   }
 
   private _requestOptions(): RequestOptions {
@@ -45,8 +43,13 @@ export class MlHttpService {
     });
   }
 
-  private static _urlFor(path: string, params?: Object): string {
-    let url = this._BASE_URL + path;
+  private _urlFor(path: string, params?: Object, noBase = false): string {
+    let url: string;
+    if(noBase) {
+      url = path;
+    } else {
+      url = this._BASE_URL + path;
+    }
     if (params) {
       url += '?' + this._parameterize(params);
     }
@@ -54,7 +57,7 @@ export class MlHttpService {
   }
 
 
-  private static _parameterize(params = {}): URLSearchParams {
+  private _parameterize(params = {}): URLSearchParams {
     let searchParams = new URLSearchParams();
 
     for (let key of keys(params)) {

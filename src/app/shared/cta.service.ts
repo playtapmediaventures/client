@@ -27,8 +27,12 @@ export class CtaService {
   public promotion: Promotion;
   private _slug: string;
   private _token: string;
+  private referrer = '';
 
   constructor(private _http: MlHttpService) {
+    if(document.referrer && document.referrer !== ''){
+      this.referrer = `&referrer=${encodeURIComponent(document.referrer)}`;
+    }
   }
 
   /***
@@ -44,7 +48,8 @@ export class CtaService {
     this._slug = slug;
     this._token = token;
 
-    let stream = this._http.get(`http://beta.msclvr.co/api/cta/${slug}/info?token=${token}`).share();
+
+    let stream = this._http.get(`${slug}/info?token=${token}${this.referrer}`).share();
     //let stream = this._http.get('https://api.myjson.com/bins/s01a7').share(); // fb
     //let stream = this._http.get('https://api.myjson.com/bins/16g2qf').share(); // tw
     //let stream = this._http.get('https://api.myjson.com/bins/ql69j').share(); // yt
@@ -58,13 +63,23 @@ export class CtaService {
   }
 
   postConversion(){
-    this._http.post(
-      `http://msclvr-crisco-staging.herokuapp.com/promotions/${this._slug}/cta-info/conversion`,
-      {token: this._token}
+    this._http.post(`${this._slug}/info/conversion?token=${this._token}${this.referrer}`,
+      {}
     ).subscribe( () => {
       console.log('registered like success');
     }, () => {
       console.log('registered like failed');
+    });
+  }
+
+
+  postRedirect(){
+    this._http.post(`${this._slug}/info/redirection?token=${this._token}${this.referrer}`,
+      {}
+    ).subscribe( () => {
+      console.log('redirect posted');
+    }, () => {
+      console.log('redirect post failed');
     });
   }
 

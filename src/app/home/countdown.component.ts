@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import {CtaService} from "../shared/cta.service";
 
 
 @Component({
@@ -16,6 +17,7 @@ export class CountdownComponent {
   private _initialOffset = 220;
   private _interval;
   constructor(
+    private _ctaService: CtaService
   ) {
 
   }
@@ -31,6 +33,7 @@ export class CountdownComponent {
 
     if(this.currentTime <= 0){
       clearInterval(this._interval);
+      this._ctaService.postRedirect();
       console.log('redirect to ', this.redirectLink);
       //window.location.href = this.redirectLink;
     } else {

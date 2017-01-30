@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {CtaService, Promotion} from "../shared/cta.service";
-import {PlayButtonComponent} from "../play-button/playButton.component";
 import {ActivatedRoute} from "@angular/router";
 
 declare var FB;
@@ -20,6 +19,7 @@ export class HomeComponent {
   public promotion: Promotion;
   public itunesBadge = 'http://msclvr.tomeralmog.com/assets/img/itunes.svg';
   public loading = true;
+  public ytClicked = false;
 
   private _FBInterval;
   private _iframeInterval;
@@ -116,6 +116,7 @@ export class HomeComponent {
       clearInterval(this._iframeInterval);
 
       likeBtn.setAttribute('data-href', this.promotion.callsToAction.page);
+      this._intervalCount = 0;
       this._initFbSdk();
     } else {
       this._iframeInterval = setInterval(()=> {
@@ -125,8 +126,18 @@ export class HomeComponent {
     }
   }
 
+  trackYt(){
+    this._ctaService.postConversion();
+    this.ytClicked = true;
+  }
+
 
   private _initFB(){
+    if(this._intervalCount > this._maxIntervals) {
+      clearInterval(this._FBInterval);
+    }
+    this._intervalCount++;
+
     if (typeof FB !== 'undefined' && typeof this.promotion !== 'undefined'){
       clearInterval(this._FBInterval);
 
