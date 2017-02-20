@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, NgZone} from '@angular/core';
 import {CtaService, Promotion} from "../shared/cta.service";
 import {ActivatedRoute} from "@angular/router";
+import {Observable, Subscriber} from "rxjs";
 
 declare var FB;
 interface FBWindow extends Window {
@@ -27,8 +28,10 @@ export class HomeComponent {
   private _maxIntervals = 10;
   constructor(
     private _ctaService: CtaService,
-    private _activatedRoute: ActivatedRoute
+    private _activatedRoute: ActivatedRoute,
+    private _ngZone: NgZone
   ) {
+     (<any>window).angularComponentRef = {component: this, zone: _ngZone};
     (<any>window).homeComponent = this;
   }
 
@@ -40,15 +43,8 @@ export class HomeComponent {
         this._ctaService.getPromotion(slug, token).subscribe((response) => {
           this.loading = false;
           this.promotion = this._ctaService.promotion;
-          if (this.promotion && this.promotion.callsToAction) {
-            if (this.promotion.callsToAction.type === 'facebook_follow') {
-              this._fbLikeIframeSrc();
-            } else if (this.promotion.callsToAction.type === 'twitter_follow') {
-              this._twBtnSrc();
-            } else if (this.promotion.callsToAction.type === 'youtube_subscribe') {
-              this._initYtSdk();
-            }
-          }
+          this._initCTA();
+
 
         },(err) => {
           console.log(err);
@@ -56,11 +52,21 @@ export class HomeComponent {
 
         });
       } else {
+        // loading promotion from global variable (preview mode).
         this.loading = false;
+        this._ctaService.previewMode = true;
+        let globalPromotion = (<any>window).promotion;
+        if (globalPromotion) {
+          this.promotion = globalPromotion;
+          this._initCTA();
+
+
+
+        }
       }
-
-
     });
+
+
 
 
     // function onYtEvent(payload) {
@@ -73,6 +79,20 @@ export class HomeComponent {
     //   window.console.log('YT event: ', payload);
     // }
   }
+
+  updatePromotion(){
+     // window.angularComponentRef might not yet be set here though
+    (<any>window).angularComponentRef.zone.run(() => {
+       this.promotion = (<any>window).promotion;
+        this._initCTA();
+        // restart timer...
+     });
+  }
+
+  ngOnDestroy() {
+    (<any>window).angularComponent = null;
+  }
+
 
 
 
@@ -129,6 +149,19 @@ export class HomeComponent {
   trackYt(){
     this._ctaService.postConversion();
     this.ytClicked = true;
+  }
+
+
+  private _initCTA(){
+    if (this.promotion && this.promotion.callsToAction) {
+      if (this.promotion.callsToAction.type === 'facebook_follow') {
+        this._fbLikeIframeSrc();
+      } else if (this.promotion.callsToAction.type === 'twitter_follow') {
+        this._twBtnSrc();
+      } else if (this.promotion.callsToAction.type === 'youtube_subscribe') {
+        this._initYtSdk();
+      }
+    }
   }
 
 

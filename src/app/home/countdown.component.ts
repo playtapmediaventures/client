@@ -33,9 +33,12 @@ export class CountdownComponent {
 
     if(this.currentTime <= 0){
       clearInterval(this._interval);
-      this._ctaService.postRedirect();
-      console.log('redirect to ', this.redirectLink);
-      //window.location.href = this.redirectLink;
+      if(!this._ctaService.previewMode) {
+        this._ctaService.postRedirect();
+        console.log('redirect to ', this.redirectLink);
+        //window.location.href = this.redirectLink;
+      }
+
     } else {
       this.currentTime--;
       this.angle = this._initialOffset - (this.currentTime * (this._initialOffset / this.countTime))

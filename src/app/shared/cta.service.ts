@@ -25,9 +25,11 @@ export interface Promotion {
 @Injectable()
 export class CtaService {
   public promotion: Promotion;
+  public previewMode = false;
   private _slug: string;
   private _token: string;
   private referrer = '';
+
 
   constructor(private _http: MlHttpService) {
     if(document.referrer && document.referrer !== ''){
