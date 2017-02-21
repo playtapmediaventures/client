@@ -1,4 +1,4 @@
-import {Component, NgZone} from '@angular/core';
+import {Component, NgZone, ViewEncapsulation} from '@angular/core';
 import {CtaService, Promotion} from "../shared/cta.service";
 import {ActivatedRoute} from "@angular/router";
 import {Observable, Subscriber} from "rxjs";
@@ -11,6 +11,7 @@ interface FBWindow extends Window {
 @Component({
   selector: 'home',
   providers: [],
+  //encapsulation: ViewEncapsulation.None,
   styleUrls: [ 'home.component.scss' ],
   templateUrl: './home.component.html',
 
@@ -85,7 +86,7 @@ export class HomeComponent {
     (<any>window).angularComponentRef.zone.run(() => {
        this.promotion = (<any>window).promotion;
         this._initCTA();
-        // restart timer...
+        this._ctaService.restartTimer();
      });
   }
 
@@ -109,6 +110,8 @@ export class HomeComponent {
 
   socialChannel(): string {
     let type: string;
+    clearInterval(this._iframeInterval);
+    clearInterval(this._FBInterval);
     if(this.promotion && typeof this.promotion.callsToAction !== 'undefined') {
       if (this.promotion.callsToAction.type === 'facebook_follow') {
         type = 'facebook';
@@ -153,6 +156,7 @@ export class HomeComponent {
 
 
   private _initCTA(){
+    this._intervalCount = 0;
     if (this.promotion && this.promotion.callsToAction) {
       if (this.promotion.callsToAction.type === 'facebook_follow') {
         this._fbLikeIframeSrc();
@@ -208,11 +212,13 @@ export class HomeComponent {
   }
 
   private _twBtnSrc() {
-    console.log('tw');
+    if(this._intervalCount > this._maxIntervals) {
+      clearInterval(this._iframeInterval);
+    }
+    this._intervalCount++;
     let twBtn = document.getElementById('tw-follow-btn');
     if(twBtn) {
       clearInterval(this._iframeInterval);
-      console.log('tw2');
       twBtn.setAttribute('href', 'https://twitter.com/' + this.promotion.callsToAction.page);
       this._initTwSdk();
     } else {

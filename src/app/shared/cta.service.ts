@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {MlHttpService} from './mlHttp.service';
 import {Observable} from 'rxjs/observable';
 import 'rxjs/add/operator/toPromise';
+import {Subject} from "rxjs";
 
 export interface Promotion {
   slug: string;
@@ -26,6 +27,8 @@ export interface Promotion {
 export class CtaService {
   public promotion: Promotion;
   public previewMode = false;
+  public timerRestart$: Observable<boolean>;
+  private _timerRestart$: Subject<boolean> = new Subject<boolean>();
   private _slug: string;
   private _token: string;
   private referrer = '';
@@ -34,6 +37,7 @@ export class CtaService {
   constructor(private _http: MlHttpService) {
     if(document.referrer && document.referrer !== ''){
       this.referrer = `&referrer=${encodeURIComponent(document.referrer)}`;
+      this.timerRestart$ = this._timerRestart$.asObservable();
     }
   }
 
@@ -51,9 +55,9 @@ export class CtaService {
     this._token = token;
 
 
-    let stream = this._http.get(`${slug}/info?token=${token}${this.referrer}`).share();
+    //let stream = this._http.get(`${slug}/info?token=${token}${this.referrer}`).share();
     //let stream = this._http.get('https://api.myjson.com/bins/s01a7').share(); // fb
-    //let stream = this._http.get('https://api.myjson.com/bins/16g2qf').share(); // tw
+    let stream = this._http.get('https://api.myjson.com/bins/16g2qf').share(); // tw
     //let stream = this._http.get('https://api.myjson.com/bins/ql69j').share(); // yt
 
 
@@ -83,6 +87,11 @@ export class CtaService {
     }, () => {
       console.log('redirect post failed');
     });
+  }
+
+
+  restartTimer(){
+    this._timerRestart$.next(true);
   }
 
   /***

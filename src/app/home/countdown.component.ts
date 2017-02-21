@@ -19,7 +19,14 @@ export class CountdownComponent {
   constructor(
     private _ctaService: CtaService
   ) {
-
+    _ctaService.timerRestart$.subscribe( () => {
+      clearInterval(this._interval);
+      this.angle = 0;
+      this.currentTime = this.countTime;
+      this._interval = setInterval(()=>{
+        this._countDown()}, 1000
+      );
+    });
   }
 
   ngOnInit(){
