@@ -48,7 +48,7 @@ export class HomeComponent {
 
 
         },(err) => {
-          // console.log(err);
+          console.log(err);
           this.loading = false;
 
         });
