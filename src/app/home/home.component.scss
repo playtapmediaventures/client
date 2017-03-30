@@ -3,6 +3,8 @@
 @import "../shared/colors";
 @import "../shared/fonts";
 
+$imageWidth: 14em;
+
 
 .float-left{
   float: left;
@@ -18,22 +20,12 @@
     min-height: 100%;
     @include background-size(cover);
     background-position: center center;
-    @include blur(8px);
+    @include blur(25px);
     width: calc(100% + 30px);
     margin-left: -15px;
 
   }
-  .apple-top{
-    position: absolute;
-    width: 100%;
-    top:0;
-    left:0;
-    padding:0.5em;
-    color: #FFF;
-    background-color: rgba(0,0,0,0.4);
-    text-align: center;
-    font-size: 1.4em;
-  }
+
 
 
   .song-wrapper{
@@ -49,71 +41,55 @@
     //@include box-shadow(0px, 0.2em, 0.4em, 0px, rgba(0,0,0,0.8));
   }
 
-  .follow-wrapper{
-    padding: 0.5em 1.5em;
-    background-color: white;
-    line-height: 1.4;
-    @include box-shadow(0px, 0.2em, 0.4em, 0px, rgba(0,0,0,0.8));
-    @include fm-border-radius;
-    text-align: center;
-    position: relative;
-    @media screen and (min-width: 768px) {
-      padding: 1.5em 2.5em;
-    }
-  }
-
-  .follow-buttons{
-    max-width: 90%;
-    font-size: 1.1em;
-    margin-top:1em;
-    background-color: #ccc;
-    display: inline-block;
-    @include fm-border-radius;
-    padding: 1em;
-    .social-icon{
-      font-size: 2em;
-    }
-  }
-
-
-
-  .album-img{
+  .album-image{
     @include background-size(cover);
     background-position: center center;
-    height:200px;
-    width:200px;
-    position: relative;
+    width: $imageWidth;
+    height: $imageWidth;
+    @include fm-border-radius;
+    float:left;
   }
 
-  .album-detail{
+  .album-content{
+    width:calc(100% - 1em - #{$imageWidth});
+    float:left;
+    background-color: #3a3435;
+    color: #FFF;
+    height: $imageWidth;
     padding: 0.5em;
-    color: #000;
-    min-width: 300px;
+    text-align: center;
+    margin-left: 1em;
+    @include fm-border-radius;
   }
-  .artist-name{
-    font-size: 1.3em;
+
+
+
+  .follow-buttons{
+    margin-top:1em;
   }
-  .track-name{
-    margin: 0.8em 0 0.4em;
+
+  .player-wrapper{
+    width: $imageWidth;
+    margin-top:1em;
+    color: #FFF;
+    float:left;
   }
-  .collection-name{
-    font-size: 0.8em;
+
+  .timer-wrapper{
+    width:calc(100% - 1em - #{$imageWidth});
+    margin-top:1em;
+    margin-left: 1em;
+    color: #FFF;
+    float:left;
   }
 
   .itunes-wrapper{
-    position: absolute;
-    bottom: 1.5em;
-    width: 100%;
-    text-align: center;
+    float: left;
+    margin-top: 2em;
   }
-  .itunes-link{
-    margin:2em 0;
-  }
-  .itunes{
-    width:110px;
-    display: inline-block;
 
-  }
+
+
 
   .error{
     padding: 1.5em 2.5em;
@@ -176,37 +152,5 @@
       cursor: pointer;
 
     }
-  }
-}
-
-@media screen and (min-width: 1200px) {
-  body{
-    font-size: 110%;
-  }
-
-}
-
-
-@media screen and (min-width: 1600px) {
-  body {
-    font-size: 120%;
-  }
-}
-
-@media screen and (min-width: 2200px) {
-  body {
-    font-size: 140%;
-  }
-}
-
-@media screen and (min-width: 2800px) {
-  body {
-    font-size: 160%;
-  }
-}
-
-@media screen and (min-width: 3200px) {
-  body {
-    font-size: 170%;
   }
 }
