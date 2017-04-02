@@ -24,6 +24,7 @@ import {CtaService} from "./shared/cta.service";
 import {StyleSafe} from "./pipes/safe.pipe";
 import {SafeSrcPipe} from "./pipes/safeSrc.pipe";
 import {HtmlDirective} from "./directives/safeHtml.directive";
+import {PlayerComponent} from "./player/player.component";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -39,6 +40,7 @@ const APP_PROVIDERS = [
     AppComponent,
     HomeComponent,
     CountdownComponent,
+    PlayerComponent,
     NoContentComponent,
     StyleSafe,
     SafeSrcPipe,
