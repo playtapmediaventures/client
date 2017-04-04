@@ -25,11 +25,11 @@
     </div>
 
     <div class="player-wrapper">
-      <player [promotion]="promotion"></player>
+      <player [promotion]="promotion" (onPlay)="toggleTimer($event)"></player>
     </div>
 
     <div class="timer-wrapper">
-      <countdown [redirectLink]="promotion?.iTunesLink" [countTime]="20"></countdown>
+      <countdown [redirectLink]="promotion?.iTunesLink" [countTime]="20" [pauseTimer]="pauseTimer"></countdown>
     </div>
 
     <div class="itunes-wrapper">

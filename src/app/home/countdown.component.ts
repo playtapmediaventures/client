@@ -12,10 +12,12 @@ import {CtaService} from "../shared/cta.service";
 export class CountdownComponent {
   @Input() redirectLink: string;
   @Input() countTime: number;
+  @Input() pauseTimer: boolean;
   public currentTime: number;
   public angle = 0;
   private _initialOffset = 220;
   private _interval;
+  private _paused = false;
   constructor(
     private _ctaService: CtaService
   ) {
@@ -23,9 +25,7 @@ export class CountdownComponent {
       clearInterval(this._interval);
       this.angle = 0;
       this.currentTime = this.countTime;
-      this._interval = setInterval(()=>{
-        this._countDown()}, 1000
-      );
+
     });
   }
 
@@ -34,6 +34,14 @@ export class CountdownComponent {
     this._interval = setInterval(()=>{
       this._countDown()}, 1000
     );
+  }
+
+  ngOnChanges(){
+    if(this.pauseTimer){
+      this._pauseCountDown();
+    } else {
+      this._contineCountDown();
+    }
   }
 
   private _countDown() {
@@ -51,4 +59,23 @@ export class CountdownComponent {
       this.angle = this._initialOffset - (this.currentTime * (this._initialOffset / this.countTime))
     }
   }
+
+  private _pauseCountDown(){
+    clearInterval(this._interval);
+    this._paused = true;
+  }
+
+  private _contineCountDown(){
+    if(this._paused){
+      clearInterval(this._interval);
+      this._paused = false;
+      this._interval = setInterval(()=>{
+        this._countDown()}, 1000
+      );
+    }
+
+  }
+
+
+
 }

@@ -22,6 +22,7 @@ export class HomeComponent {
   public itunesBadge = 'http://msclvr.tomeralmog.com/assets/img/itunes.svg';
   public loading = true;
   public ytClicked = false;
+  public pauseTimer = false;
 
   private _FBInterval;
   private _iframeInterval;
@@ -94,7 +95,9 @@ export class HomeComponent {
     (<any>window).angularComponent = null;
   }
 
-
+  toggleTimer(playing: boolean){
+    this.pauseTimer = playing;
+  }
 
 
   bgImage(): string{
