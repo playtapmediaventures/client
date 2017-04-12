@@ -25,7 +25,7 @@ export class HomeComponent {
   public pauseTimer = false;
 
   private _FBInterval;
-  private _iframeInterval;
+  private _iframeInterval=null;
   private _intervalCount = 0;
   private _maxIntervals = 10;
   constructor(
@@ -133,21 +133,19 @@ export class HomeComponent {
 
   private _fbLikeIframeSrc(){
     if(this._intervalCount > this._maxIntervals) {
-      clearInterval(this._iframeInterval);
+      return
     }
     this._intervalCount++;
 
     let likeBtn = document.getElementById('fb-like-btn');
     if(likeBtn) {
-      clearInterval(this._iframeInterval);
-
       likeBtn.setAttribute('data-href', this.promotion.callsToAction.page);
       this._intervalCount = 0;
-      this._initFbSdk();
+      setTimeout(()=>{this._initFbSdk();},2000);
     } else {
-      this._iframeInterval = setInterval(()=> {
+      setTimeout(()=> {
           this._fbLikeIframeSrc()
-        }, 100
+        }, 200
       );
     }
   }
@@ -174,12 +172,11 @@ export class HomeComponent {
 
   private _initFB(){
     if(this._intervalCount > this._maxIntervals) {
-      clearInterval(this._FBInterval);
+      return;
     }
     this._intervalCount++;
 
     if (typeof FB !== 'undefined' && typeof this.promotion !== 'undefined'){
-      clearInterval(this._FBInterval);
 
       FB.init({
         appId      : '456829841160778',
@@ -193,7 +190,7 @@ export class HomeComponent {
       FB.Event.subscribe('edge.remove', this.page_like_or_unlike_callback);
 
     } else {
-      this._FBInterval = setInterval(()=> {
+      setTimeout(()=> {
           this._initFB()
         }, 100
       );
@@ -216,19 +213,15 @@ export class HomeComponent {
 
   private _twBtnSrc() {
     if(this._intervalCount > this._maxIntervals) {
-      clearInterval(this._iframeInterval);
+      return;
     }
     this._intervalCount++;
     let twBtn = document.getElementById('tw-follow-btn');
     if(twBtn) {
-      clearInterval(this._iframeInterval);
       twBtn.setAttribute('href', 'https://twitter.com/' + this.promotion.callsToAction.page);
       this._initTwSdk();
     } else {
-      this._iframeInterval = setInterval(()=> {
-          this._twBtnSrc()
-        }, 100
-      );
+      setTimeout(()=>{this._twBtnSrc();}, 200);
     }
   }
 
@@ -246,16 +239,13 @@ export class HomeComponent {
 
   private _initYtSdk() {
       (<any>window).onYtEvent = (payload) =>{
-        console.log('YT event: ', payload);
         if (payload.eventType == 'subscribe') {
           // Add code to handle subscribe event
           (<any>window).homeComponent._ctaService.postConversion();
         } else if (payload.eventType == 'unsubscribe') {
           // Add code to handle unsubscribe event.
         }
-        if (window.console) { // for debugging only
-          window.console.log('YT event: ', payload);
-        }
+
       }
       let d = document;
       let s = 'script';

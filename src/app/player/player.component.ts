@@ -21,7 +21,7 @@ export class PlayerComponent {
   }
 
   ngOnInit(){
-    this._audio.src = "http://a859.phobos.apple.com/us/r30/Music6/v4/68/34/f1/6834f1f8-8fdb-4247-492a-c0caea580082/mzaf_3920281300599106672.plus.aac.p.m4a";
+    this._audio.src = this.promotion.previewSongUrl;
     this._audio.onended = () => {
       this.pause();
     };

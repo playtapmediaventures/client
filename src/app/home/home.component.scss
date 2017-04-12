@@ -51,6 +51,7 @@ $imageWidth: 14em;
   }
 
   .album-content{
+    position: relative;
     width:calc(100% - 1em - #{$imageWidth});
     float:left;
     background-color: #3a3435;
@@ -60,32 +61,38 @@ $imageWidth: 14em;
     text-align: center;
     margin-left: 1em;
     @include fm-border-radius;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
 
 
   .follow-buttons{
-    margin-top:1em;
+    margin-top:3em;
   }
 
   .player-wrapper{
-    width: $imageWidth;
-    margin-top:1em;
+    width: 100%;
+    padding:1em 0;
     color: #FFF;
-    float:left;
+    clear: both;
+    border-bottom: solid 1px #3a3435;
+
   }
 
   .timer-wrapper{
     width:calc(100% - 1em - #{$imageWidth});
-    margin-top:1em;
+    padding-top:2em;
     margin-left: 1em;
     color: #FFF;
     float:left;
   }
 
   .itunes-wrapper{
+    width: $imageWidth;
     float: left;
     margin-top: 2em;
+    text-align: center;
   }
 
 

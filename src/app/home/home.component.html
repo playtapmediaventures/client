@@ -6,9 +6,9 @@
       {{promotion?.callsToAction?.message}}
       <div class="follow-buttons">
 
-        <span *ngIf="socialChannel() === 'facebook'" id="fb-like-wrapper">
+        <div *ngIf="socialChannel() === 'facebook'" id="fb-like-wrapper">
           <div id="fb-like-btn" class="fb-like"  data-layout="button" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>
-        </span>
+        </div>
 
         <span *ngIf="socialChannel() === 'twitter'">
           <a id="tw-follow-btn" class="twitter-follow-button"  data-show-count="false" data-size="large">Follow @{{promotion?.callsToAction?.page}}</a>
@@ -28,12 +28,14 @@
       <player [promotion]="promotion" (onPlay)="toggleTimer($event)"></player>
     </div>
 
-    <div class="timer-wrapper">
-      <countdown [redirectLink]="promotion?.iTunesLink" [countTime]="20" [pauseTimer]="pauseTimer"></countdown>
-    </div>
+
 
     <div class="itunes-wrapper">
       <a [href]="promotion?.iTunesLink"><img [src]="itunesBadge"/></a>
+    </div>
+
+    <div class="timer-wrapper">
+      <countdown [redirectLink]="promotion?.iTunesLink" [countTime]="20" [pauseTimer]="pauseTimer"></countdown>
     </div>
   </div>
   <!--<div class="song-wrapper" *ngIf="promotion && !loading">-->
