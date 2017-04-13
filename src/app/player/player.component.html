@@ -1,4 +1,4 @@
-<div class="play-wrapper">
+<div class="play-wrapper" *ngIf="this.promotion.previewSongUrl">
   <i class="fa fa-play fa-2x" aria-hidden="true" *ngIf="!playing" (click)="play()"></i>
   <i class="fa fa-pause fa-2x" aria-hidden="true" *ngIf="playing" (click)="pause()"></i>
 </div>

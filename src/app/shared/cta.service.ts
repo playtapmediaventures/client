@@ -56,8 +56,8 @@ export class CtaService {
     this._token = token;
 
 
-    //let stream = this._http.get(`${slug}/info?token=${token}${this.referrer}`).share();
-    let stream = this._http.get('https://api.myjson.com/bins/s01a7').share(); // fb
+    let stream = this._http.get(`${slug}/info?token=${token}${this.referrer}`).share();
+    //let stream = this._http.get('https://api.myjson.com/bins/s01a7').share(); // fb
     //let stream = this._http.get('https://api.myjson.com/bins/16g2qf').share(); // tw
     //let stream = this._http.get('https://api.myjson.com/bins/ql69j').share(); // yt
 
@@ -114,7 +114,8 @@ export class CtaService {
       trackName: response.medium.track_name,
       iTunesLink: response.medium.url,
       social_media_accounts: response.user.social_media_accounts,
-      previewSongUrl: 'http://a859.phobos.apple.com/us/r30/Music6/v4/68/34/f1/6834f1f8-8fdb-4247-492a-c0caea580082/mzaf_3920281300599106672.plus.aac.p.m4a' // response.medium.preview_url
+      //previewSongUrl: 'http://a859.phobos.apple.com/us/r30/Music6/v4/68/34/f1/6834f1f8-8fdb-4247-492a-c0caea580082/mzaf_3920281300599106672.plus.aac.p.m4a' // response.medium.preview_url
+      previewSongUrl: response.medium.preview_url
     };
     if (response.call_to_action) {
       let cta = response.call_to_action;

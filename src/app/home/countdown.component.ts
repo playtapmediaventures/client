@@ -14,19 +14,13 @@ export class CountdownComponent {
   @Input() countTime: number;
   @Input() pauseTimer: boolean;
   public currentTime: number;
-  public angle = 0;
   private _initialOffset = 220;
   private _interval;
   private _paused = false;
   constructor(
     private _ctaService: CtaService
   ) {
-    _ctaService.timerRestart$.subscribe( () => {
-      clearInterval(this._interval);
-      this.angle = 0;
-      this.currentTime = this.countTime;
 
-    });
   }
 
   ngOnInit(){
@@ -34,9 +28,18 @@ export class CountdownComponent {
     this._interval = setInterval(()=>{
       this._countDown()}, 1000
     );
+
+    if(this._ctaService.timerRestart$){
+      this._ctaService.timerRestart$.subscribe( () => {
+        clearInterval(this._interval);
+        this.currentTime = this.countTime;
+
+      });
+    }
+
   }
 
-  ngOnChanges(){
+  ngOnChanges(changes: any){
     if(this.pauseTimer){
       this._pauseCountDown();
     } else {
@@ -56,7 +59,6 @@ export class CountdownComponent {
 
     } else {
       this.currentTime--;
-      this.angle = this._initialOffset - (this.currentTime * (this._initialOffset / this.countTime))
     }
   }
 

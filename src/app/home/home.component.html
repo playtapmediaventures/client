@@ -3,23 +3,26 @@
   <div class="song-wrapper" *ngIf="promotion && !loading">
     <div class="album-image" [style.backgroundImage]="bgImage() | styleSafe"></div>
     <div class="album-content">
-      {{promotion?.callsToAction?.message}}
-      <div class="follow-buttons">
+      <div class="table">
+        <div class="table-cell">
+          {{promotion?.callsToAction?.message}}
+          <div class="follow-buttons">
 
-        <div *ngIf="socialChannel() === 'facebook'" id="fb-like-wrapper">
-          <div id="fb-like-btn" class="fb-like"  data-layout="button" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>
-        </div>
+            <div *ngIf="socialChannel() === 'facebook'" id="fb-like-wrapper">
+              <div id="fb-like-btn" class="fb-like"  data-layout="button" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>
+            </div>
 
-        <span *ngIf="socialChannel() === 'twitter'">
-          <a id="tw-follow-btn" class="twitter-follow-button"  data-show-count="false" data-size="large">Follow @{{promotion?.callsToAction?.page}}</a>
-        </span>
-        <span *ngIf="socialChannel() === 'youtube'">
-          <div class="g-ytsubscribe" [attr.data-channel]="promotion?.callsToAction?.page" data-layout="default" data-count="hidden" data-onytevent="onYtEvent"></div>
-          <div class="youtube-click-track-wrapper" (click)="trackYt()" *ngIf="!ytClicked">
-            <div class="youtube-click-track"></div>
+            <span *ngIf="socialChannel() === 'twitter'">
+              <a id="tw-follow-btn" class="twitter-follow-button"  data-show-count="false" data-size="large">Follow @{{promotion?.callsToAction?.page}}</a>
+            </span>
+            <span *ngIf="socialChannel() === 'youtube'">
+              <div class="g-ytsubscribe" [attr.data-channel]="promotion?.callsToAction?.page" data-layout="default" data-count="hidden" data-onytevent="onYtEvent"></div>
+              <div class="youtube-click-track-wrapper" (click)="trackYt()" *ngIf="!ytClicked">
+                <div class="youtube-click-track"></div>
+              </div>
+            </span>
           </div>
-        </span>
-
+        </div>
 
       </div>
     </div>
