@@ -20,6 +20,8 @@ $imageWidth: 14em;
   float: left;
 }
 
+.text-center{text-align: center;}
+
 .homepage {
   position: relative;
   height: 100%;
@@ -163,6 +165,17 @@ $imageWidth: 14em;
       @include fm-border-radius;
       cursor: pointer;
 
+    }
+  }
+
+  .bottom-logo{
+    position: fixed;
+    bottom:0.5em;
+    height: 3em;
+    width: 100%;
+    text-align: center;
+    img{
+      height: 3em;
     }
   }
 }
