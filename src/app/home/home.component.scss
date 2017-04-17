@@ -168,6 +168,10 @@ $imageWidth: 14em;
     }
   }
 
+  .loading-text{
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+  }
+
   .bottom-logo{
     position: fixed;
     bottom:0.5em;
