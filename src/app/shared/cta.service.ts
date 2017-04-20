@@ -56,10 +56,10 @@ export class CtaService {
     this._token = token;
 
 
-    let stream = this._http.get(`${slug}/info?token=${token}${this.referrer}`).share();
-    //let stream = this._http.get('https://api.myjson.com/bins/13tog3').share(); // fb
-    //let stream = this._http.get('https://api.myjson.com/bins/16g2qf').share(); // tw
-    //let stream = this._http.get('https://api.myjson.com/bins/ql69j').share(); // yt
+    //let stream = this._http.get(`${slug}/info?token=${token}${this.referrer}`).share();
+    let stream = this._http.get('https://api.myjson.com/bins/13tog3').share(); // fb
+    //let stream = this._http.get('https://api.myjson.com/bins/17dw9j').share(); // tw
+    //let stream = this._http.get('https://api.myjson.com/bins/120ztj').share(); // yt
 
 
     stream.subscribe((response) => {
