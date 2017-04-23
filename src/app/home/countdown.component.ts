@@ -53,8 +53,7 @@ export class CountdownComponent {
       clearInterval(this._interval);
       if(!this._ctaService.previewMode) {
         this._ctaService.postRedirect();
-        console.log('redirect to ', this.redirectLink);
-        //window.location.href = this.redirectLink;
+        window.location.href = this.redirectLink;
       }
 
     } else {
