@@ -19,7 +19,7 @@ interface FBWindow extends Window {
 export class HomeComponent {
   public slug: string;
   public promotion: Promotion;
-  public itunesBadge = 'http://msclvr.tomeralmog.com/assets/img/itunes.svg';
+  public itunesBadge = '//assets.msclvr.co/img/itunes.svg';
   public loading = true;
   public ytClicked = false;
   public pauseTimer = false;
@@ -104,7 +104,7 @@ export class HomeComponent {
     if(this.promotion && this.promotion.albumArtUrlLarge) {
       return 'url(' + this.promotion.albumArtUrlLarge + ')';
     } else {
-      return 'url(http://msclvr.tomeralmog.com/assets/img/msclvr-bg.png)';
+      return 'url(//assets.msclvr.co/img/msclvr-bg.png)';
     }
 
 
