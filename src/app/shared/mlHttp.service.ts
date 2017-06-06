@@ -7,8 +7,7 @@ import {keys} from '../util/util';
 
 @Injectable()
 export class MlHttpService {
-  //private _BASE_URL = '';
-  private _BASE_URL = 'http://beta.msclvr.co/api/cta/';
+  private _BASE_URL = '/api/cta/';
 
   constructor(private _http: Http) {
   }
@@ -77,4 +76,3 @@ export class MlHttpService {
   }
 
 }
-
