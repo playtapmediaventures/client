@@ -14,7 +14,7 @@ export interface Promotion {
   previewSongUrl: string;
   trackName: string;
   iTunesLink: string;
-  social_media_accounts: any;
+  socialMediaAccounts: any;
   callsToAction?: {
     type: string;
     message: string;
@@ -56,7 +56,7 @@ export class CtaService {
     this._token = token;
 
 
-    let stream = this._http.get(`${slug}/info?token=${token}${this.referrer}`).share();
+    const stream = this._http.get(`${slug}/info?token=${token}${this.referrer}`).share();
     //let stream = this._http.get('https://api.myjson.com/bins/13tog3').share(); // fb
     //let stream = this._http.get('https://api.myjson.com/bins/17dw9j').share(); // tw
     //let stream = this._http.get('https://api.myjson.com/bins/120ztj').share(); // yt
@@ -102,8 +102,8 @@ export class CtaService {
    * @private
    */
   private _parsePromotion(response: any) {
-    let mediumArt = response.medium.album_art_url ? response.medium.album_art_url.replace('100x100bb.jpg', '225x225-75.jpg') : null
-    let largeArt = response.medium.album_art_url ? response.medium.album_art_url.replace('100x100bb.jpg', '600x600-75.jpg') : null
+    const mediumArt = response.medium.album_art_url ? response.medium.album_art_url.replace('100x100bb.jpg', '225x225-75.jpg') : null
+    const largeArt = response.medium.album_art_url ? response.medium.album_art_url.replace('100x100bb.jpg', '600x600-75.jpg') : null
     this.promotion = {
       slug: response.slug,
       artistName: response.medium.artist_name,
@@ -113,16 +113,17 @@ export class CtaService {
       albumArtUrlLarge: largeArt,
       trackName: response.medium.track_name,
       iTunesLink: response.medium.url,
-      social_media_accounts: response.user.social_media_accounts,
+      socialMediaAccounts: [],
       //previewSongUrl: 'http://a859.phobos.apple.com/us/r30/Music6/v4/68/34/f1/6834f1f8-8fdb-4247-492a-c0caea580082/mzaf_3920281300599106672.plus.aac.p.m4a' // response.medium.preview_url
       previewSongUrl: response.medium.preview_url
     };
     if (response.call_to_action) {
-      let cta = response.call_to_action;
+      const cta = response.call_to_action;
       // only one channel is enabled.
       let socialPage = '';
-      if(response.user && response.user.social_media_accounts){
+      if (response.user && response.user.social_media_accounts){
         for (let account of response.user.social_media_accounts) {
+          this.promotion.socialMediaAccounts.push(account);
 
           if (cta.type === "facebook_follow" && account.network === 'facebook') {
             socialPage = account.handle;
@@ -184,4 +185,3 @@ export class CtaService {
 // }
 
 }
-
