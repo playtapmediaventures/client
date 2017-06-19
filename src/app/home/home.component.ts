@@ -61,9 +61,6 @@ export class HomeComponent {
         if (globalPromotion) {
           this.promotion = globalPromotion;
           this._initCTA();
-
-
-
         }
       }
     });
@@ -158,13 +155,22 @@ export class HomeComponent {
 
   private _initCTA(){
     this._intervalCount = 0;
-    if (this.promotion && this.promotion.callsToAction) {
-      if (this.promotion.callsToAction.type === 'facebook_follow') {
-        this._fbLikeIframeSrc();
-      } else if (this.promotion.callsToAction.type === 'twitter_follow') {
-        this._twBtnSrc();
-      } else if (this.promotion.callsToAction.type === 'youtube_subscribe') {
-        this._initYtSdk();
+    if (this.promotion) {
+      if(this.promotion.callsToAction) {
+        if (this.promotion.callsToAction.type === 'facebook_follow') {
+          this._fbLikeIframeSrc();
+        } else if (this.promotion.callsToAction.type === 'twitter_follow') {
+          this._twBtnSrc();
+        } else if (this.promotion.callsToAction.type === 'youtube_subscribe') {
+          this._initYtSdk();
+        }
+      } else {
+        const ctaService = (<any>window).homeComponent._ctaService;
+        // No Call to Action, so just redirect
+        if(!ctaService.previewMode) {
+          ctaService.postRedirect();
+          window.location.href = this.promotion.iTunesLink;
+        }
       }
     }
   }
