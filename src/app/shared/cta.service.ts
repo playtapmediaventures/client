@@ -57,6 +57,7 @@ export class CtaService {
 
 
     const stream = this._http.get(`${slug}/info?token=${token}${this.referrer}`).share();
+    // const stream = this._http.get('https://api.myjson.com/bins/uqu0z').share(); // fb - empire
     //let stream = this._http.get('https://api.myjson.com/bins/13tog3').share(); // fb
     //let stream = this._http.get('https://api.myjson.com/bins/17dw9j').share(); // tw
     //let stream = this._http.get('https://api.myjson.com/bins/120ztj').share(); // yt

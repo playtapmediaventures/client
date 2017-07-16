@@ -8,6 +8,7 @@ import {keys} from '../util/util';
 @Injectable()
 export class MlHttpService {
   private _BASE_URL = '/api/cta/';
+  // private _BASE_URL = '';
 
   constructor(private _http: Http) {
   }
