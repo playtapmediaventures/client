@@ -22,6 +22,7 @@ export class HomeComponent {
   public itunesBadge = '//assets.msclvr.co/img/itunes.svg';
   public loading = true;
   public ytClicked = false;
+  public fbClicked = false;
   public pauseTimer = false;
 
   private _FBInterval;
@@ -150,6 +151,11 @@ export class HomeComponent {
   trackYt(){
     this._ctaService.postConversion();
     this.ytClicked = true;
+  }
+
+  trackFb(){
+    this._ctaService.postConversion();
+    this.fbClicked = true;
   }
 
 

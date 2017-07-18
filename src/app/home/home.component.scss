@@ -222,6 +222,11 @@ $mobileBreak: 769px;
       @include fm-border-radius;
       cursor: pointer;
 
+      &.facebook-track {
+        background: #FFF url(http://msclvr.tomeralmog.com/assets/img/fb-logo.png) center center no-repeat;
+        @include background-size(contain);
+      }
+
     }
   }
 
