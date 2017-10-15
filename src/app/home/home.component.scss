@@ -44,7 +44,7 @@ $mobileBreak: 769px;
 .homepage {
   position: relative;
   height: 100%;
-  //background: #eee url(../../assets/img/msclvr-bg.png) right bottom;
+  //background: #eee url(../../ctai/img/msclvr-bg.png) right bottom;
   //@include background-size(cover);
   background-color: #aaa;
   .album-bg {
@@ -192,7 +192,7 @@ $mobileBreak: 769px;
       width: 100%;
       height: 12em;
       padding: 1em;
-      background: url(/img/404.jpg) center center no-repeat;
+      background: url(/ctai/img/404.jpg) center center no-repeat;
       @include background-size(contain);
       @media screen and (min-width: $mobileBreak) {
         width: calc(40% - 2em);
@@ -217,13 +217,13 @@ $mobileBreak: 769px;
       width: 150px;
       height: 40px;
       display: inline-block;
-      background: #FFF url(/img/yt-logo.png) center center no-repeat;
+      background: #FFF url(/ctai/img/yt-logo.png) center center no-repeat;
       @include background-size(contain);
       @include fm-border-radius;
       cursor: pointer;
 
       &.facebook-track {
-        background: #FFF url(/img/fb-logo.png) center center no-repeat;
+        background: #FFF url(/ctai/img/fb-logo.png) center center no-repeat;
         @include background-size(contain);
       }
 

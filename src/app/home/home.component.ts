@@ -16,19 +16,27 @@ interface FBWindow extends Window {
   templateUrl: './home.component.html',
 
 })
+
 export class HomeComponent {
+  private static SOCIAL_CHANNEL_ACTION_TO_TYPE = {
+    facebook_follow: 'facebook',
+    twitter_follow: 'twitter',
+    youtube_subscribe: 'youtube'
+  }
+
   public slug: string;
   public promotion: Promotion;
-  public itunesBadge = '/img/itunes.svg';
+  public itunesBadge = '/ctai/img/itunes.svg';
   public loading = true;
   public ytClicked = false;
   public fbClicked = false;
   public pauseTimer = false;
 
   private _FBInterval;
-  private _iframeInterval=null;
+  private _iframeInterval = null;
   private _intervalCount = 0;
   private _maxIntervals = 10;
+
   constructor(
     private _ctaService: CtaService,
     private _activatedRoute: ActivatedRoute,
@@ -65,19 +73,6 @@ export class HomeComponent {
         }
       }
     });
-
-
-
-
-    // function onYtEvent(payload) {
-    // if (payload.eventType == 'subscribe') {
-    //   // Add code to handle subscribe event.
-    // } else if (payload.eventType == 'unsubscribe') {
-    //   // Add code to handle unsubscribe event.
-    // }
-    // if (window.console) { // for debugging only
-    //   window.console.log('YT event: ', payload);
-    // }
   }
 
   updatePromotion(){
@@ -98,29 +93,20 @@ export class HomeComponent {
   }
 
 
-  bgImage(): string{
-    if(this.promotion && this.promotion.albumArtUrlLarge) {
-      return 'url(' + this.promotion.albumArtUrlLarge + ')';
-    } else {
-      return 'url(/img/msclvr-bg.png)';
-    }
+  bgImage(): string {
+    const img = (this.promotion && this.promotion.albumArtUrlLarge) ?
+      this.promotion.albumArtUrlLarge :
+      '/ctai/img/msclvr-bg.png';
 
-
+    return `url(${img})`;
   }
-
 
   socialChannel(): string {
     let type: string;
     clearInterval(this._iframeInterval);
     clearInterval(this._FBInterval);
     if(this.promotion && typeof this.promotion.callsToAction !== 'undefined') {
-      if (this.promotion.callsToAction.type === 'facebook_follow') {
-        type = 'facebook';
-      } else if (this.promotion.callsToAction.type === 'twitter_follow') {
-        type = 'twitter';
-      } else if (this.promotion.callsToAction.type === 'youtube_subscribe') {
-        type = 'youtube';
-      }
+      type = HomeComponent.SOCIAL_CHANNEL_ACTION_TO_TYPE[this.promotion.callsToAction.type];
     }
     return type;
   }
@@ -230,7 +216,7 @@ export class HomeComponent {
     this._intervalCount++;
     let twBtn = document.getElementById('tw-follow-btn');
     if(twBtn) {
-      twBtn.setAttribute('href', 'https://twitter.com/' + this.promotion.callsToAction.page);
+      twBtn.setAttribute('href', `https://twitter.com/${this.promotion.callsToAction.page}`);
       this._initTwSdk();
     } else {
       setTimeout(()=>{this._twBtnSrc();}, 200);
