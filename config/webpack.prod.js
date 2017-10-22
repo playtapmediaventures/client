@@ -92,8 +92,8 @@ module.exports = function (env) {
         {
           test: /\.css$/,
           loader: ExtractTextPlugin.extract({
-              fallbackLoader: 'style-loader',
-              loader: 'css-loader'
+              fallback: 'style-loader',
+              use: 'css-loader'
             }),
           include: [helpers.root('src', 'styles')]
         },
@@ -104,8 +104,8 @@ module.exports = function (env) {
         {
           test: /\.scss$/,
           loader: ExtractTextPlugin.extract({
-              fallbackLoader: 'style-loader',
-              loader: 'css-loader!sass-loader'
+              fallback: 'style-loader',
+              use: 'css-loader!sass-loader'
             }),
           include: [helpers.root('src', 'styles')]
         },
@@ -123,7 +123,7 @@ module.exports = function (env) {
 
       /**
        * Plugin: ExtractTextPlugin
-       * Description: Extracts imported CSS files into external stylesheet 
+       * Description: Extracts imported CSS files into external stylesheet
        *
        * See: https://github.com/webpack/extract-text-webpack-plugin
        */
