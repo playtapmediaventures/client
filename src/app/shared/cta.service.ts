@@ -46,28 +46,30 @@ export class CtaService {
    * call backend to get promotion info.
    *
    * @param slug
-   * @returns {Observable<Object>} response from http call
+   * @returns {Promise<void>} response from http call
    */
-  getPromotion(slug: string, token: string): Observable<Object> {
+  getPromotion(slug: string, token: string): Promise<void> {
     if (typeof slug === 'undefined' || typeof token === 'undefined') {
       return;
     }
     this._slug = slug;
     this._token = token;
 
+    const promotionPromise = this._http.get(`${slug}/info?token=${token}${this.referrer}`).toPromise();
+    // const promotionPromise = this._http.get('https://api.myjson.com/bins/uqu0z').toPromise(); // fb - empire
+    //let promotionPromise = this._http.get('https://api.myjson.com/bins/13tog3').toPromise(); // fb
+    //let promotionPromise = this._http.get('https://api.myjson.com/bins/17dw9j').toPromise(); // tw
+    //let promotionPromise = this._http.get('https://api.myjson.com/bins/120ztj').toPromise(); // yt
 
-    const stream = this._http.get(`${slug}/info?token=${token}${this.referrer}`).share();
-    // const stream = this._http.get('https://api.myjson.com/bins/uqu0z').share(); // fb - empire
-    //let stream = this._http.get('https://api.myjson.com/bins/13tog3').share(); // fb
-    //let stream = this._http.get('https://api.myjson.com/bins/17dw9j').share(); // tw
-    //let stream = this._http.get('https://api.myjson.com/bins/120ztj').share(); // yt
 
-
-    stream.subscribe((response) => {
-      this._parsePromotion(response);
-    },(err) => {
-    });
-    return stream;
+    return promotionPromise
+      .then((response) => {
+        this._parsePromotion(response);
+      })
+      .catch((err) => {
+        console.log(`Error while calling ${slug}/info?token=${token}${this.referrer}`);
+        console.log(err);
+      });
   }
 
   postConversion(){
@@ -84,7 +86,7 @@ export class CtaService {
   postRedirect(){
     this._http.post(`${this._slug}/info/redirection?token=${this._token}${this.referrer}`,
       {}
-    ).subscribe( () => {
+    ).subscribe(() => {
       console.log('redirect posted');
     }, () => {
       console.log('redirect post failed');
@@ -139,13 +141,13 @@ export class CtaService {
           }
         }
       }
+
       this.promotion.callsToAction = {
         type: cta.type,
         message: cta.message,
         tag: cta.tag,
         page: socialPage
       }
-
     }
   }
 

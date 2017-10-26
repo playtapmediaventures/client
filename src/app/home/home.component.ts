@@ -24,7 +24,6 @@ export class HomeComponent {
     youtube_subscribe: 'youtube'
   }
 
-  public slug: string;
   public promotion: Promotion;
   public itunesBadge = '/ctai/img/itunes.svg';
   public loading = true;
@@ -40,38 +39,36 @@ export class HomeComponent {
   constructor(
     private _ctaService: CtaService,
     private _activatedRoute: ActivatedRoute,
-    private _ngZone: NgZone
+    private _ngZone: NgZone,
+    private _slug: string,
+    private _token: string,
+    private _promotionPromise: Promise<void>
   ) {
      (<any>window).angularComponentRef = {component: this, zone: _ngZone};
     (<any>window).homeComponent = this;
-  }
 
-  ngAfterViewInit() {
     this._activatedRoute.queryParams.subscribe((queryParams: any) => {
-      let slug = queryParams.slug;
-      let token = queryParams.token;
-      if(typeof slug !== 'undefined' || typeof token !== 'undefined') {
-        this._ctaService.getPromotion(slug, token).subscribe((response) => {
-          this.loading = false;
-          this.promotion = this._ctaService.promotion;
-          this._initCTA();
+      this._slug = queryParams.slug;
+      this._token = queryParams.token;
 
-
-        },(err) => {
-          console.log(err);
-          this.loading = false;
-
-        });
+      if (this._slug || this._token) {
+        this._promotionPromise = this._ctaService.getPromotion(this._slug, this._token)
+          .then(() => {
+            this.promotion = this._ctaService.promotion;
+          });
       } else {
-        // loading promotion from global variable (preview mode).
-        this.loading = false;
         this._ctaService.previewMode = true;
-        let globalPromotion = (<any>window).promotion;
-        if (globalPromotion) {
-          this.promotion = globalPromotion;
-          this._initCTA();
-        }
+        this._promotionPromise = new Promise<void>(() => {
+          this.promotion = (<any>window).promotion;
+        });
       }
+    });
+  }
+  
+  ngAfterViewInit() {
+    this._promotionPromise.then(() => {
+      this.loading = false;
+      this._initCTA();
     });
   }
 
@@ -92,7 +89,6 @@ export class HomeComponent {
     this.pauseTimer = playing;
   }
 
-
   bgImage(): string {
     const img = (this.promotion && this.promotion.albumArtUrlLarge) ?
       this.promotion.albumArtUrlLarge :
@@ -105,24 +101,24 @@ export class HomeComponent {
     let type: string;
     clearInterval(this._iframeInterval);
     clearInterval(this._FBInterval);
-    if(this.promotion && typeof this.promotion.callsToAction !== 'undefined') {
+    if (this.promotion && typeof this.promotion.callsToAction !== 'undefined') {
       type = HomeComponent.SOCIAL_CHANNEL_ACTION_TO_TYPE[this.promotion.callsToAction.type];
     }
     return type;
   }
 
-  page_like_or_unlike_callback(url, html_element) {
+  private _pageLikeOrUnlikeCallback(url, htmlElement) {
     (<any>window).homeComponent._ctaService.postConversion();
   }
 
   private _fbLikeIframeSrc(){
-    if(this._intervalCount > this._maxIntervals) {
-      return
+    if (this._intervalCount > this._maxIntervals) {
+      return;
     }
     this._intervalCount++;
 
     let likeBtn = document.getElementById('fb-like-btn');
-    if(likeBtn) {
+    if (likeBtn) {
       likeBtn.setAttribute('data-href', this.promotion.callsToAction.page);
       this._intervalCount = 0;
       setTimeout(()=>{this._initFbSdk();},2000);
@@ -143,7 +139,6 @@ export class HomeComponent {
     this._ctaService.postConversion();
     this.fbClicked = true;
   }
-
 
   private _initCTA(){
     this._intervalCount = 0;
@@ -167,7 +162,6 @@ export class HomeComponent {
     }
   }
 
-
   private _initFB(){
     if(this._intervalCount > this._maxIntervals) {
       return;
@@ -184,8 +178,8 @@ export class HomeComponent {
 
       FB.AppEvents.logPageView();
       FB.XFBML.parse();
-      FB.Event.subscribe('edge.create', this.page_like_or_unlike_callback);
-      FB.Event.subscribe('edge.remove', this.page_like_or_unlike_callback);
+      FB.Event.subscribe('edge.create', this._pageLikeOrUnlikeCallback);
+      FB.Event.subscribe('edge.remove', this._pageLikeOrUnlikeCallback);
 
     } else {
       setTimeout(()=> {
@@ -236,7 +230,7 @@ export class HomeComponent {
   }
 
   private _initYtSdk() {
-      (<any>window).onYtEvent = (payload) =>{
+      (<any>window).onYtEvent = (payload) => {
         if (payload.eventType == 'subscribe') {
           // Add code to handle subscribe event
           (<any>window).homeComponent._ctaService.postConversion();
@@ -253,10 +247,5 @@ export class HomeComponent {
       js = d.createElement(s); js.id = id;
       js.src = "https://apis.google.com/js/platform.js";
       fjs.parentNode.insertBefore(js, fjs);
-
-
-
   }
-
-
 }
