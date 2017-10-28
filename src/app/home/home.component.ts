@@ -35,50 +35,79 @@ export class HomeComponent {
   private _iframeInterval = null;
   private _intervalCount = 0;
   private _maxIntervals = 10;
+  private _slug;
+  private _token;
+  private _promotionPromise;
 
-  constructor(
+  constructor (
     private _ctaService: CtaService,
     private _activatedRoute: ActivatedRoute,
-    private _ngZone: NgZone,
-    private _slug: string,
-    private _token: string,
-    private _promotionPromise: Promise<void>
+    private _ngZone: NgZone
   ) {
-     (<any>window).angularComponentRef = {component: this, zone: _ngZone};
+    (<any>window).angularComponentRef = {component: this, zone: _ngZone};
     (<any>window).homeComponent = this;
+
+    if (this._isPromotionInjected()) {
+      this._ctaService.previewMode = true;
+      this._promotionPromise = new Promise<void>(() => {
+        this.promotion = (<any>window).promotion;
+      });
+      return;
+    }
 
     this._activatedRoute.queryParams.subscribe((queryParams: any) => {
       this._slug = queryParams.slug;
       this._token = queryParams.token;
 
-      if (this._slug || this._token) {
-        this._promotionPromise = this._ctaService.getPromotion(this._slug, this._token)
-          .then(() => {
-            this.promotion = this._ctaService.promotion;
-          });
-      } else {
-        this._ctaService.previewMode = true;
-        this._promotionPromise = new Promise<void>(() => {
-          this.promotion = (<any>window).promotion;
+      this._promotionPromise = this._ctaService.getPromotion(this._slug, this._token)
+        .then(() => {
+          this.promotion = this._ctaService.promotion;
         });
-      }
     });
   }
-  
+
+  ngOnInit() {
+    this._promotionPromise
+      .then(() => {
+        this.loading = false;
+        if (!this.promotion.callsToAction) {
+          const ctaService = this._ctaService;
+
+          // No Call to Action, so just redirect
+          if (!ctaService.previewMode) {
+            ctaService.postRedirect();
+            window.location.href = this.promotion.iTunesLink;
+          }
+        }
+      })
+      .catch(() => {
+        this.loading = false;
+      });
+  }
+
   ngAfterViewInit() {
     this._promotionPromise.then(() => {
       this.loading = false;
-      this._initCTA();
+
+      if (this.promotion.callsToAction) {
+        this._initCTA();
+      }
+    })
+    .catch(() => {
+      this.loading = false;
     });
   }
 
   updatePromotion(){
-     // window.angularComponentRef might not yet be set here though
     (<any>window).angularComponentRef.zone.run(() => {
        this.promotion = (<any>window).promotion;
         this._initCTA();
         this._ctaService.restartTimer();
      });
+  }
+
+  private _isPromotionInjected() {
+    return !!(<any>window).promotion;
   }
 
   ngOnDestroy() {
@@ -101,14 +130,14 @@ export class HomeComponent {
     let type: string;
     clearInterval(this._iframeInterval);
     clearInterval(this._FBInterval);
-    if (this.promotion && typeof this.promotion.callsToAction !== 'undefined') {
+    if (this.promotion && !!this.promotion.callsToAction) {
       type = HomeComponent.SOCIAL_CHANNEL_ACTION_TO_TYPE[this.promotion.callsToAction.type];
     }
     return type;
   }
 
   private _pageLikeOrUnlikeCallback(url, htmlElement) {
-    (<any>window).homeComponent._ctaService.postConversion();
+    this._ctaService.postConversion();
   }
 
   private _fbLikeIframeSrc(){
@@ -143,20 +172,13 @@ export class HomeComponent {
   private _initCTA(){
     this._intervalCount = 0;
     if (this.promotion) {
-      if(this.promotion.callsToAction) {
+      if (this.promotion.callsToAction) {
         if (this.promotion.callsToAction.type === 'facebook_follow') {
           this._fbLikeIframeSrc();
         } else if (this.promotion.callsToAction.type === 'twitter_follow') {
           this._twBtnSrc();
         } else if (this.promotion.callsToAction.type === 'youtube_subscribe') {
           this._initYtSdk();
-        }
-      } else {
-        const ctaService = (<any>window).homeComponent._ctaService;
-        // No Call to Action, so just redirect
-        if(!ctaService.previewMode) {
-          ctaService.postRedirect();
-          window.location.href = this.promotion.iTunesLink;
         }
       }
     }
