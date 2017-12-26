@@ -12,7 +12,7 @@ interface FBWindow extends Window {
   selector: 'home',
   providers: [],
   //encapsulation: ViewEncapsulation.None,
-  styleUrls: [ 'home.component.scss' ],
+  styleUrls: ['home.component.scss'],
   templateUrl: './home.component.html',
 
 })
@@ -39,34 +39,49 @@ export class HomeComponent {
   private _token;
   private _promotionPromise;
 
-  constructor (
-    private _ctaService: CtaService,
-    private _activatedRoute: ActivatedRoute,
-    private _ngZone: NgZone
-  ) {
+  constructor(private _ctaService: CtaService,
+              private _activatedRoute: ActivatedRoute,
+              private _ngZone: NgZone) {
     (<any>window).angularComponentRef = {component: this, zone: _ngZone};
     (<any>window).homeComponent = this;
 
-    if (this._isPromotionInjected()) {
-      this._ctaService.previewMode = true;
-      this._promotionPromise = new Promise<void>(() => {
-        this.promotion = (<any>window).promotion;
-      });
-      return;
-    }
+    // if (this._isPromotionInjected()) {
+    //   this._ctaService.previewMode = true;
+    //   this._promotionPromise = new Promise<void>(() => {
+    //     this.promotion = (<any>window).promotion;
+    //   });
+    //   return;
+    // }
 
     this._activatedRoute.queryParams.subscribe((queryParams: any) => {
-      this._slug = queryParams.slug;
-      this._token = queryParams.token;
+      let preview = queryParams.preview;
+      if (preview) {
+        this._ctaService.previewMode = true;
 
-      this._promotionPromise = this._ctaService.getPromotion(this._slug, this._token)
-        .then(() => {
-          this.promotion = this._ctaService.promotion;
+        this._promotionPromise = new Promise<void>(() => {
+          this.promotion = JSON.parse(preview);
+
         });
+
+      } else {
+        this._slug = queryParams.slug;
+        this._token = queryParams.token;
+
+        this._promotionPromise = this._ctaService.getPromotion(this._slug, this._token)
+          .then(() => {
+            this.promotion = this._ctaService.promotion;
+          });
+      }
+
+
     });
   }
 
   ngOnInit() {
+    console.log(this._promotionPromise);
+    if (this._ctaService.previewMode) {
+      this.loading = false;
+    }
     this._promotionPromise
       .then(() => {
         this.loading = false;
@@ -93,28 +108,28 @@ export class HomeComponent {
         this._initCTA();
       }
     })
-    .catch(() => {
-      this.loading = false;
+      .catch(() => {
+        this.loading = false;
+      });
+  }
+
+  updatePromotion() {
+    (<any>window).angularComponentRef.zone.run(() => {
+      this.promotion = (<any>window).promotion;
+      this._initCTA();
+      this._ctaService.restartTimer();
     });
   }
 
-  updatePromotion(){
-    (<any>window).angularComponentRef.zone.run(() => {
-       this.promotion = (<any>window).promotion;
-        this._initCTA();
-        this._ctaService.restartTimer();
-     });
-  }
-
-  private _isPromotionInjected() {
-    return !!(<any>window).promotion;
-  }
+  // private _isPromotionInjected() {
+  //   return !!(<any>window).promotion;
+  // }
 
   ngOnDestroy() {
     (<any>window).angularComponent = null;
   }
 
-  toggleTimer(playing: boolean){
+  toggleTimer(playing: boolean) {
     this.pauseTimer = playing;
   }
 
@@ -140,7 +155,7 @@ export class HomeComponent {
     this._ctaService.postConversion();
   }
 
-  private _fbLikeIframeSrc(){
+  private _fbLikeIframeSrc() {
     if (this._intervalCount > this._maxIntervals) {
       return;
     }
@@ -150,26 +165,28 @@ export class HomeComponent {
     if (likeBtn) {
       likeBtn.setAttribute('data-href', this.promotion.callsToAction.page);
       this._intervalCount = 0;
-      setTimeout(()=>{this._initFbSdk();},2000);
+      setTimeout(() => {
+        this._initFbSdk();
+      }, 2000);
     } else {
-      setTimeout(()=> {
+      setTimeout(() => {
           this._fbLikeIframeSrc()
         }, 200
       );
     }
   }
 
-  trackYt(){
+  trackYt() {
     this._ctaService.postConversion();
     this.ytClicked = true;
   }
 
-  trackFb(){
+  trackFb() {
     this._ctaService.postConversion();
     this.fbClicked = true;
   }
 
-  private _initCTA(){
+  private _initCTA() {
     this._intervalCount = 0;
     if (this.promotion) {
       if (this.promotion.callsToAction) {
@@ -184,18 +201,18 @@ export class HomeComponent {
     }
   }
 
-  private _initFB(){
-    if(this._intervalCount > this._maxIntervals) {
+  private _initFB() {
+    if (this._intervalCount > this._maxIntervals) {
       return;
     }
     this._intervalCount++;
 
-    if (typeof FB !== 'undefined' && typeof this.promotion !== 'undefined'){
+    if (typeof FB !== 'undefined' && typeof this.promotion !== 'undefined') {
 
       FB.init({
-        appId      : '456829841160778',
-        xfbml      : true,
-        version    : 'v2.8'
+        appId: '456829841160778',
+        xfbml: true,
+        version: 'v2.8'
       });
 
       FB.AppEvents.logPageView();
@@ -204,7 +221,7 @@ export class HomeComponent {
       FB.Event.subscribe('edge.remove', this._pageLikeOrUnlikeCallback);
 
     } else {
-      setTimeout(()=> {
+      setTimeout(() => {
           this._initFB()
         }, 100
       );
@@ -212,62 +229,67 @@ export class HomeComponent {
   }
 
   private _initFbSdk() {
-      let d = document;
-      let s = 'script';
-      let id = 'facebook-jssdk';
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=456829841160778";
-      fjs.parentNode.insertBefore(js, fjs);
+    let d = document;
+    let s = 'script';
+    let id = 'facebook-jssdk';
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=456829841160778";
+    fjs.parentNode.insertBefore(js, fjs);
 
-      this._initFB();
+    this._initFB();
 
   }
 
   private _twBtnSrc() {
-    if(this._intervalCount > this._maxIntervals) {
+    if (this._intervalCount > this._maxIntervals) {
       return;
     }
     this._intervalCount++;
     let twBtn = document.getElementById('tw-follow-btn');
-    if(twBtn) {
+    if (twBtn) {
       twBtn.setAttribute('href', `https://twitter.com/${this.promotion.callsToAction.page}`);
       this._initTwSdk();
     } else {
-      setTimeout(()=>{this._twBtnSrc();}, 200);
+      setTimeout(() => {
+        this._twBtnSrc();
+      }, 200);
     }
   }
 
   private _initTwSdk() {
-      let d = document;
-      let s = 'script';
-      let id = 'twitter-jssdk';
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//platform.twitter.com/widgets.js";
-      fjs.parentNode.insertBefore(js, fjs);
+    let d = document;
+    let s = 'script';
+    let id = 'twitter-jssdk';
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "//platform.twitter.com/widgets.js";
+    fjs.parentNode.insertBefore(js, fjs);
 
   }
 
   private _initYtSdk() {
-      (<any>window).onYtEvent = (payload) => {
-        if (payload.eventType == 'subscribe') {
-          // Add code to handle subscribe event
-          (<any>window).homeComponent._ctaService.postConversion();
-        } else if (payload.eventType == 'unsubscribe') {
-          // Add code to handle unsubscribe event.
-        }
-
+    (<any>window).onYtEvent = (payload) => {
+      if (payload.eventType == 'subscribe') {
+        // Add code to handle subscribe event
+        (<any>window).homeComponent._ctaService.postConversion();
+      } else if (payload.eventType == 'unsubscribe') {
+        // Add code to handle unsubscribe event.
       }
-      let d = document;
-      let s = 'script';
-      let id = 'yt-jssdk';
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "https://apis.google.com/js/platform.js";
-      fjs.parentNode.insertBefore(js, fjs);
+
+    }
+    let d = document;
+    let s = 'script';
+    let id = 'yt-jssdk';
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://apis.google.com/js/platform.js";
+    fjs.parentNode.insertBefore(js, fjs);
   }
 }
