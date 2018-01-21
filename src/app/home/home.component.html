@@ -1,6 +1,6 @@
 <div class="homepage">
   <div class="album-bg" [style.backgroundImage]="bgImage() | styleSafe"></div>
-  <div class="song-wrapper" *ngIf="promotion && !loading">
+  <div class="song-wrapper" *ngIf="promotion && promotion.callsToAction && !loading">
     <div class="album-image" [style.backgroundImage]="bgImage() | styleSafe"></div>
     <div class="player-wrapper mobile-only">
       <player [promotion]="promotion" (onPlay)="toggleTimer($event)"></player>
@@ -41,8 +41,6 @@
       <player [promotion]="promotion" (onPlay)="toggleTimer($event)"></player>
     </div>
 
-
-
     <div class="itunes-wrapper desktop-only">
       <a [href]="promotion?.iTunesLink"><img [src]="itunesBadge"/></a>
     </div>
@@ -54,7 +52,6 @@
   </div>
 
   <div class="song-wrapper" *ngIf="!promotion && !loading">
-
     <div class="error">
       <div class="error-text">
         <h1>RUH ROH!</h1>

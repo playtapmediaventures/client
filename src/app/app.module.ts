@@ -3,13 +3,10 @@ import {BrowserModule, SafeUrl, SafeStyle} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {HttpModule, JsonpModule} from '@angular/http';
 import {RouterModule, PreloadAllModules} from '@angular/router';
-import { __platform_browser_private__ } from '@angular/platform-browser';
-import {removeNgStyles, createNewHosts, createInputTransfer} from '@angularclass/hmr';
 
 /*
  * Platform and Environment providers/directives/pipes
  */
-import {ENV_PROVIDERS} from './environment';
 import {ROUTES} from './app.routes';
 // App is our top level component
 import {AppComponent} from './app.component';
@@ -30,7 +27,6 @@ import {PlayerComponent} from "./player/player.component";
 const APP_PROVIDERS = [
   MlHttpService,
   CtaService,
-  __platform_browser_private__.BROWSER_SANITIZATION_PROVIDERS
 ];
 
 
@@ -54,7 +50,6 @@ const APP_PROVIDERS = [
     RouterModule.forRoot(ROUTES, {useHash: false, preloadingStrategy: PreloadAllModules})
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
-    ENV_PROVIDERS,
     APP_PROVIDERS
   ]
 })

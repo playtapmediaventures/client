@@ -1,20 +1,20 @@
 @import "../reset";
 @import "../shared/fonts";
-.countdown-wrapper{
+.countdown-wrapper {
   color: #FFF;
   font-size: 1.2em;
   text-align: center;
-  a{
-    color:#FFF;
-    vertical-align:baseline;
-    vertical-align:-webkit-baseline-middle;
-    text-shadow: 0 0 5px rgba(0,0,0,0.8);
+  text-shadow: 0 0 5px rgba(0,0,0,0.8);
 
+  a {
+    color: #FFF;
+    vertical-align: baseline;
+    vertical-align: -webkit-baseline-middle;
   }
-  span{
+  span {
     vertical-align: middle;
   }
-  i{
-    vertical-align:baseline;
+  i {
+    vertical-align: baseline;
   }
 }

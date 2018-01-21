@@ -1,55 +1,14 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Client</title>
+  <base href="/">
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title><%= htmlWebpackPlugin.options.title %></title>
-
-  <meta name="description" content="<%= htmlWebpackPlugin.options.title %>">
-
-  <% if (webpackConfig.htmlElements.headTags) { %>
-  <!-- Configured Head Tags  -->
-    <%= webpackConfig.htmlElements.headTags %>
-  <% } %>
-
-  <link href="/homepage.css" rel="stylesheet" type="text/css" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" media="all"  rel="stylesheet" type="text/css"/>
-
-  <!-- favicons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
-  <link rel="manifest" href="/manifest.json">
-  <link rel="mask-icon" href="/icon/safari-pinned-tab.svg" color="#4c2d46">
-  <meta name="apple-mobile-web-app-title" content="MSCLVR">
-  <meta name="application-name" content="MSCLVR">
-  <meta name="msapplication-config" content="/browserconfig.xml" />
-  <meta name="msapplication-TileColor" content="#4c2d46">
-  <meta name="msapplication-TileImage" content="/icon/mstile-144x144.png">
-  <meta name="theme-color" content="#ffffff">
-
-  <!-- base url -->
-  <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
-
-
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
-
 <body>
-
-
-
-
-  <app>
-    Loading...
-  </app>
-
-
-  <% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true) { %>
-  <!-- Webpack Dev Server reload -->
-  <script src="/webpack-dev-server.js"></script>
-  <% } %>
-
-  </body>
+  <app></app>
+</body>
 </html>
