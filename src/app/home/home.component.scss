@@ -223,7 +223,7 @@ $mobileBreak: 769px;
       height: 40px;
       display: inline-block;
       background: #FFF url(/ctai/img/yt-logo.png) center center no-repeat;
-      @include background-size(contain);
+      background-size: 75px;
       @include fm-border-radius;
       cursor: pointer;
 
