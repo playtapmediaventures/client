@@ -232,7 +232,7 @@ export class HomeComponent {
     if (d.getElementById(id)) return;
     js = d.createElement(s);
     js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=456829841160778";
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.12&appId=456829841160778";
     fjs.parentNode.insertBefore(js, fjs);
 
     this._initFB();
